@@ -1,5 +1,5 @@
 <h1 align="center">Olá, eu sou o Frederick Moura 👋</h1>
-<h3 align="center">🔶 Oracle Database Administrator (DBA) | PL/SQL • Performance Tuning • Data Guard • Database Security</h3>
+<h3 align="center">🔶 Oracle Database Administrator (DBA) SQL| PL/SQL • Performance Tuning • Data Guard •Backup e Recover Oracle |Database Security</h3>
 
 <p align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=3500&pause=800&color=F80000&center=true&vCenter=true&width=700&lines=Oracle+DBA+%7C+19c+%E2%80%A2+23ai+%E2%80%A2+26ai;Performance+Tuning+%E2%80%A2+High+Availability;Data+Guard+%E2%80%A2+RAC+%E2%80%A2+RMAN+%E2%80%A2+Database+Security;PL%2FSQL+%E2%80%A2+Tuning+%E2%80%A2+Backup+%26+Recovery" alt="Typing SVG" />
@@ -21,9 +21,9 @@
 
 Sou **Administrador de Banco de Dados Oracle (DBA)** com foco em garantir **alta disponibilidade, performance e segurança** em ambientes corporativos de missão crítica. Trabalho com as versões mais recentes do Oracle Database (**19c, 23ai e 26ai**) e tenho como objetivo agregar valor a times de engenharia, gestores e CIOs que buscam excelência operacional em suas plataformas de dados.
 
-- 🔭 Atualmente atuo com **administração, tuning e segurança de bancos Oracle** em ambientes produtivos.
-- 🧠 Em constante aprendizado em **Oracle 23ai/26ai**, **Oracle Cloud Infrastructure (OCI)** e **automação com PL/SQL**.
-- 🤝 Aberto a oportunidades **Oracle DBA**, **Cloud Database Engineer** e projetos de **migração/modernização** de bancos.
+- 🔭 Atualmente atuo com **administração, SQL, tuning e segurança de bancos Oracle** em ambientes produtivos.
+- 🧠 Em constante aprendizado em **Oracle 19C/23ai/26ai**, **Oracle Cloud Infrastructure (OCI)** e **automação com PL/SQL**.
+- 🤝 Aberto a oportunidades **Oracle DBA SQL**, **Cloud Database Engineer** e projetos de **migração/modernização** de bancos.
 - 📫 Contato: via [LinkedIn](https://www.linkedin.com/in/frederick-moura-30a99827/)
 
 ---
