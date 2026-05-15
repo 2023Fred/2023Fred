@@ -28,6 +28,39 @@ Sou **Administrador de Banco de Dados Oracle (DBA)** com foco em garantir **alta
 
 ---
 
+## 📁 Portfólio Executivo & Documentos
+
+> Documentos preparados para diferentes audiências profissionais — recrutadores, líderes técnicos, gestores de TI e CIOs.
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <h3>📊 Relatório Executivo</h3>
+      <p><b>Para Gestores e CIOs</b></p>
+      <p>Visão estratégica, KPIs, governança de TI e proposta de valor para o negócio.</p>
+      <a href="https://github.com/2023Fred/Projeto-da-Imers-o-de-IA/blob/main/relatorio_gestores_cio.pdf">
+        <img src="https://img.shields.io/badge/%F0%9F%93%84%20Acessar%20Relat%C3%B3rio-F80000?style=for-the-badge&logo=adobeacrobatreader&logoColor=white"/>
+      </a>
+    </td>
+    <td width="50%" align="center">
+      <h3>🎓 Programa de Formação</h3>
+      <p><b>Para Recrutadores Oracle e RH</b></p>
+      <p>Trilha de capacitação contínua em Oracle 19c, 23ai, 26ai, OCI e certificações.</p>
+      <a href="https://github.com/2023Fred/Projeto-da-Imers-o-de-IA/blob/main/Programa%20de%20Forma%C3%A7%C3%A3o.pdf">
+        <img src="https://img.shields.io/badge/%F0%9F%93%98%20Acessar%20Programa-0A66C2?style=for-the-badge&logo=adobeacrobatreader&logoColor=white"/>
+      </a>
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <a href="https://github.com/2023Fred/Projeto-da-Imers-o-de-IA">
+    <img src="https://img.shields.io/badge/Ver%20portf%C3%B3lio%20completo%20no%20reposit%C3%B3rio-181717?style=for-the-badge&logo=github&logoColor=white"/>
+  </a>
+</p>
+
+---
+
 ## 🛠️ Stack & Tecnologias
 
 ### 🗄️ Bancos de Dados & Oracle Ecosystem
