@@ -19,7 +19,7 @@
 
 ## 👨‍💻 Sobre mim
 
-Sou **Administrador de Banco de Dados Oracle (DBA)** com foco em garantir **alta disponibilidade, performance e segurança** em ambientes corporativos de missão crítica. Trabalho com as versões mais recentes do Oracle Database (**19c, 23ai e 26ai**) e tenho como objetivo agregar valor a times de engenharia, gestores e CIOs que buscam excelência operacional em suas plataformas de dados.
+Sou **Administrador de Banco de Dados Oracle SQL (DBA)** com foco em garantir **alta disponibilidade, performance e segurança** em ambientes corporativos de missão crítica. Trabalho com as versões mais recentes do Oracle Database (**19c, 23ai e 26ai**) e tenho como objetivo agregar valor a times de engenharia, gestores e CIOs que buscam excelência operacional em suas plataformas de dados.
 
 - 🔭 Atualmente atuo com **administração, SQL, tuning e segurança de bancos Oracle** em ambientes produtivos.
 - 🧠 Em constante aprendizado em **Oracle 19C/23ai/26ai**, **Oracle Cloud Infrastructure (OCI)** e **automação com PL/SQL**.
@@ -107,7 +107,7 @@ Sou **Administrador de Banco de Dados Oracle (DBA)** com foco em garantir **alta
 | 🔁 **Alta Disponibilidade** | Implementação e gestão de Oracle Data Guard, RAC, Failover e Disaster Recovery. |
 | 💾 **Backup & Recovery** | Estratégias completas com RMAN, restore point-in-time, clonagem e migrações. |
 | ☁️ **Oracle Cloud (OCI)** | Provisionamento e administração de Autonomous Database e DB Systems na OCI. |
-| 🤖 **Oracle 23ai / 26ai** | Recursos de IA integrados, AI Vector Search e novas funcionalidades para workloads modernos. |
+| 🤖 **Oracle 19C / 23ai / 26ai** | Recursos de IA integrados, Oracle AI Vector Search e novas funcionalidades para workloads modernos. |
 
 ---
 
@@ -126,8 +126,8 @@ Sou **Administrador de Banco de Dados Oracle (DBA)** com foco em garantir **alta
 
 ## 📚 Aprendizado Contínuo
 
-- 🎓 Imersão em IA – Alura / Google (Gemini)
-- 📘 Estudos avançados em **Oracle 23ai** (AI Vector Search, JSON Relational Duality)
+- 🎓 Imersão em IA – ORACLE IA, VSCODE / CLAUDE (Gemini)
+- 📘 Estudos avançados em **Oracle 19C, 23ai,26ai** (Oracle AI Vector Search, Relational Duality)
 - ☁️ Aprofundamento em **Oracle Cloud Infrastructure (OCI)**
 - 🔐 Atualização constante em **Database Security & Compliance (LGPD/GDPR)**
 
@@ -135,7 +135,7 @@ Sou **Administrador de Banco de Dados Oracle (DBA)** com foco em garantir **alta
 
 ## 📫 Vamos conversar?
 
-Estou aberto a oportunidades como **Oracle DBA**, **Database Engineer**, **Cloud Database Specialist** e projetos de **migração/modernização** de bancos Oracle.
+Estou aberto a oportunidades como **Oracle DBA SQL**, **Database Oracle**, **Administração, SQL, Backup e Recover, Tuning e Segurança de Bancos Oracle** e projetos de **migração/modernização** de bancos Oracle.
 
 <p align="center">
   <a href="https://www.linkedin.com/in/frederick-moura-30a99827/">
