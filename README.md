@@ -51,28 +51,16 @@ Sou **Administrador de Banco de Dados Oracle SQL (DBA)** com foco em garantir **
       </a>
     </td>
   </tr>
-    <tr>
-          <td colspan="2" align="center">
-                  <h3>📰 Portfólio LinkedIn</h3>h3>
-                  <p><b>Últimas publicações para Gestores Oracle & CIOs</b>b></p>p>
-      <p>Flashback, RMAN Duplicate, Recover Table e Recovery Full em Oracle 19c com IA — traduzidos em valor de negócio.</p>p>
-      <a href="./PORTFOLIO_LINKEDIN.md">
-                <img src="https://img.shields.io/badge/%F0%9F%93%B0%20Ver%20Portf%C3%B3lio%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"/>
-      </a>a>
-          </td>td>
-    </tr>tr>
-      </p>
   <tr>
-                                      <td colspan="2" align="center">
-                                      <h3>📰 Portfólio LinkedIn</h3>
-                                        <p><b>Últimas publicações para Gestores Oracle & CIOs</b>b></p>p>
-<p>Flashback, RMAN Duplicate, Recover Table e Recovery Full em Oracle 19c com IA — traduzidos em valor de negócio.</p>p>
-<a href="./PORTFOLIO_LINKEDIN.md">
-  <img src="https://img.shields.io/badge/%F0%9F%93%B0%20Ver%20Portf%C3%B3lio%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"/>
-</a>a>
-                                      </td>td>
-  </tr>tr>
-</p></p>
+    <td colspan="2" align="center">
+      <h3>📰 Portfólio LinkedIn</h3>
+      <p><b>Últimas publicações para Gestores Oracle & CIOs</b></p>
+      <p>Flashback, RMAN Duplicate, Recover Table e Recovery Full em Oracle 19c com IA — traduzidos em valor de negócio.</p>
+      <a href="./PORTFOLIO_LINKEDIN.md">
+        <img src="https://img.shields.io/badge/%F0%9F%93%B0%20Ver%20Portf%C3%B3lio%20LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"/>
+      </a>
+    </td>
+  </tr>
 </table>
 
 <p align="center">
