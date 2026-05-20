@@ -66,7 +66,7 @@ Sou **Administrador de Banco de Dados Oracle SQL (DBA)** com foco em garantir **
       <h3>🛢️ Oracle 19c — Relatório DBA</h3>
       <p><b>Dashboard Executivo & Técnico</b></p>
       <p>Implementação completa da estratégia de Proteção de Dados Oracle 19c — FRA, Archive Log, Flashback, RMAN Backup & Recovery, Recovery de Tabela e Duplicate Database.</p>
-      <a href="./oracle_dba_report.html">
+      <a href="https://htmlpreview.github.io/?https://github.com/2023Fred/2023Fred/blob/main/oracle_dba_report.html">
         <img src="https://img.shields.io/badge/%F0%9F%9B%A2%EF%B8%8F%20Acessar%20Relat%C3%B3rio%20Oracle-C74634?style=for-the-badge&logo=oracle&logoColor=white"/>
       </a>
     </td>
