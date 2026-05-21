@@ -71,6 +71,16 @@ Sou **Administrador de Banco de Dados Oracle SQL (DBA)** com foco em garantir **
       </a>
     </td>
   </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <h3>:shield: Oracle Data Guard 19c — Showboard com IA</h3>
+      <p><b>Para Gestores e CIOs Oracle</b></p>
+      <p>Case Study Executivo: implantação de <b>Data Guard 19c</b> (Primary ORCL_PR / Standby ORCL_ST) orquestrada por <b>9 Skills de IA</b> em 52 passos auditáveis — <b>0s de transport lag</b> e <b>zero data loss</b> em failover. Tradução direta do esforço técnico do DBA em valor de negócio: alta disponibilidade, RPO/RTO mensuráveis, governança e compliance LGPD/GDPR.</p>
+      <a href="https://claude.ai/public/artifacts/8a022e99-0da9-481c-ba61-e2ff69e277dc">
+        <img src="https://img.shields.io/badge/Acessar%20Showboard%20Data%20Guard-1E6091?style=for-the-badge&logo=oracle&logoColor=white"/>
+      </a>
+    </td>
+  </tr>
 </table>
 
 <p align="center">
