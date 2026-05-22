@@ -38,7 +38,7 @@ Sou **Administrador de Banco de Dados Oracle SQL (DBA)** com foco em garantir **
       <h3>📊 Relatório Executivo</h3>
       <p><b>Para Gestores e CIOs</b></p>
       <p>Visão estratégica, KPIs, governança de TI e proposta de valor para o negócio.</p>
-      <a href="https://github.com/2023Fred/Projeto-da-Imers-o-de-IA/blob/main/relatorio_gestores_cio.pdf">
+      <a href="https://htmlpreview.github.io/?https://github.com/2023Fred/2023Fred/blob/main/relatorio-executivo.html">
         <img src="https://img.shields.io/badge/%F0%9F%93%84%20Acessar%20Relat%C3%B3rio-F80000?style=for-the-badge&logo=adobeacrobatreader&logoColor=white"/>
       </a>
     </td>
@@ -75,7 +75,7 @@ Sou **Administrador de Banco de Dados Oracle SQL (DBA)** com foco em garantir **
     <td colspan="2" align="center">
       <h3>:shield: Oracle Data Guard 19c — Showboard com IA</h3>
       <p><b>Para Gestores e CIOs Oracle</b></p>
-      <p>Case Study Executivo: implantação de <b>Data Guard 19c</b> (Primary ORCL_PR / Standby ORCL_ST) orquestrada por <b>9 Skills de IA</b> em 52 passos auditáveis — <b>0s de transport lag</b> e <b>zero data loss</b> em failover. Tradução direta do esforço técnico do DBA em valor de negócio: alta disponibilidade, RPO/RTO mensuráveis, governança e compliance LGPD/GDPR.</p>
+      <p>Case Study Executivo: implantação de <b>Data Guard 19c</b> (Primary ORCL_PR / Standby ORCL_ST) orquestrada por <b>9 Skills de IA</b> em 52 passos auditáveis — <b>0s de transport lag</b> e <b>zero data loss</b> em failover. Tradução direta do esforço técnico do DBA em valor de negócio: alta disponibilidade, RPO/RTO mensuráveis, governança e compliance LGPD/GDPR.</p>h
       <a href="https://claude.ai/public/artifacts/8a022e99-0da9-481c-ba61-e2ff69e277dc">
         <img src="https://img.shields.io/badge/Acessar%20Showboard%20Data%20Guard-1E6091?style=for-the-badge&logo=oracle&logoColor=white"/>
       </a>
