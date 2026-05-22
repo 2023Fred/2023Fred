@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório Executivo — Laboratório Oracle 19c com IA Claude</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0e1a;
+    --paper: #f5f1e8;
+    --paper-2: #ebe4d3;
+    --rust: #b8442f;
+    --ochre: #d18d3a;
+    --olive: #5a6b3f;
+    --teal: #2a5560;
+    --gold: #c8a049;
+    --muted: #6b6253;
+    --line: #2a2418;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(184,68,47,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(42,85,96,0.04) 0%, transparent 50%);
+  }
+
+  /* ─── CAPA ─── */
+  .cover {
+    min-height: 100vh;
+    padding: 80px 8vw 60px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .cover::before {
+    content: 'ORACLE';
+    position: absolute;
+    bottom: -60px;
+    right: -40px;
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 28vw;
+    color: var(--ink);
+    opacity: 0.04;
+    letter-spacing: -0.05em;
+    line-height: 0.8;
+    pointer-events: none;
+  }
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+  .cover-top span { display: block; }
+  .cover-top .label { color: var(--rust); margin-bottom: 4px; }
+  .cover-mid {
+    margin-top: 12vh;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--rust);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--rust);
+  }
+  h1.title {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    max-width: 1100px;
+  }
+  h1.title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--rust);
+  }
+  h1.title strong {
+    font-weight: 800;
+    display: block;
+  }
+  .subtitle {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(18px, 2vw, 24px);
+    color: var(--muted);
+    margin-top: 32px;
+    max-width: 700px;
+    line-height: 1.5;
+  }
+  .cover-bottom {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-top: 60px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(42,36,24,0.15);
+  }
+  .meta-block .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .meta-block .value {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* ─── SEÇÕES ─── */
+  section {
+    padding: 100px 8vw;
+    border-bottom: 1px solid rgba(42,36,24,0.1);
+    position: relative;
+  }
+  section.alt { background: var(--paper-2); }
+  section.dark {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  section.dark .eyebrow { color: var(--gold); }
+  section.dark .eyebrow::before { background: var(--gold); }
+  section.dark h2 { color: var(--paper); }
+  section.dark h2 em { color: var(--gold); }
+  section.dark .lead { color: rgba(245,241,232,0.75); }
+  section.dark .muted { color: rgba(245,241,232,0.6); }
+
+  .section-num {
+    position: absolute;
+    top: 60px;
+    right: 8vw;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 1000px;
+    margin-bottom: 40px;
+    color: var(--ink);
+  }
+  h2 em {
+    font-style: italic;
+    color: var(--rust);
+  }
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 1.3;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+  h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+
+  .lead {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(20px, 2.2vw, 28px);
+    line-height: 1.5;
+    color: var(--ink);
+    max-width: 900px;
+    margin-bottom: 48px;
+  }
+  .lead em { font-style: italic; color: var(--rust); }
+
+  p { max-width: 760px; margin-bottom: 18px; }
+  p.wide { max-width: 100%; }
+
+  .muted { color: var(--muted); }
+
+  /* ─── ACID GRID ─── */
+  .acid-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(42,36,24,0.2);
+    border: 1px solid rgba(42,36,24,0.2);
+    margin-top: 48px;
+  }
+  .acid-card {
+    background: var(--paper);
+    padding: 36px 28px;
+    transition: background 0.3s;
+  }
+  .acid-card:hover { background: var(--paper-2); }
+  .acid-card .letter {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 72px;
+    line-height: 1;
+    color: var(--rust);
+    margin-bottom: 16px;
+  }
+  .acid-card .word {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .acid-card .desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ─── PUBLICO ─── */
+  .audience-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .audience-card {
+    border: 1px solid rgba(42,36,24,0.15);
+    padding: 32px 24px;
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .audience-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 40px; height: 4px;
+    background: var(--rust);
+  }
+  .audience-card .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 16px;
+  }
+  .audience-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  .audience-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ─── PRINTS / TERMINAL ─── */
+  .terminal {
+    background: #0d1117;
+    border-radius: 8px;
+    padding: 0;
+    margin: 24px 0;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    border: 1px solid rgba(255,255,255,0.05);
+    overflow: hidden;
+    max-width: 100%;
+  }
+  .terminal-header {
+    background: #161b22;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .terminal-dot {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+  }
+  .dot-r { background: #ff5f56; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #27c93f; }
+  .terminal-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #8b949e;
+    margin-left: 12px;
+  }
+  .terminal-body {
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #c9d1d9;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .t-prompt { color: #7ee787; }
+  .t-cmd    { color: #d2a8ff; }
+  .t-key    { color: #79c0ff; }
+  .t-ok     { color: #56d364; }
+  .t-warn   { color: #f0b429; }
+  .t-crit   { color: #ff7b72; }
+  .t-info   { color: #58a6ff; }
+  .t-muted  { color: #6e7681; }
+  .t-line   { color: #484f58; }
+
+  .print-caption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-top: 12px;
+    margin-bottom: 32px;
+    padding-left: 12px;
+    border-left: 2px solid var(--rust);
+  }
+
+  /* ─── SKILLS GRID ─── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .skill-card {
+    background: rgba(245,241,232,0.04);
+    border: 1px solid rgba(245,241,232,0.1);
+    padding: 28px;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .skill-card:hover {
+    background: rgba(245,241,232,0.08);
+    border-color: var(--gold);
+  }
+  .skill-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: 16px;
+    letter-spacing: 0.1em;
+  }
+  .skill-card h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 14px;
+    text-transform: lowercase;
+    letter-spacing: 0;
+  }
+  .skill-card p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(245,241,232,0.65);
+    margin: 0;
+  }
+  .skill-card .verdict {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(245,241,232,0.1);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── ARQUITETURA ─── */
+  .arch-diagram {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 48px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 2;
+    margin: 32px 0;
+    overflow-x: auto;
+  }
+  .arch-diagram .host { color: var(--gold); font-weight: 700; }
+  .arch-diagram .pri  { color: #56d364; }
+  .arch-diagram .dup  { color: #58a6ff; }
+  .arch-diagram .std  { color: #f0b429; }
+  .arch-diagram .com  { color: #8b949e; }
+
+  /* ─── ACHADOS TABLE ─── */
+  .findings {
+    margin-top: 32px;
+  }
+  .finding-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 200px 140px;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(42,36,24,0.1);
+    align-items: center;
+  }
+  .finding-row:last-child { border-bottom: none; }
+  .finding-num {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--rust);
+    line-height: 1;
+  }
+  .finding-text h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .finding-text p {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+  }
+  .finding-source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .severity {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border: 1px solid;
+    text-align: center;
+    font-weight: 700;
+  }
+  .sev-crit { color: var(--rust); border-color: var(--rust); background: rgba(184,68,47,0.05); }
+  .sev-high { color: var(--ochre); border-color: var(--ochre); background: rgba(209,141,58,0.05); }
+  .sev-med  { color: var(--olive); border-color: var(--olive); background: rgba(90,107,63,0.05); }
+  .sev-info { color: var(--teal); border-color: var(--teal); background: rgba(42,85,96,0.05); }
+
+  /* ─── KPIs ─── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 48px;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+  }
+  .kpi {
+    padding: 32px 24px;
+    border-right: 1px solid rgba(42,36,24,0.15);
+  }
+  .kpi:last-child { border-right: none; }
+  .kpi .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .kpi .value {
+    font-family: 'Fraunces', serif;
+    font-size: 52px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .kpi .value.crit { color: var(--rust); }
+  .kpi .value.warn { color: var(--ochre); }
+  .kpi .value.ok   { color: var(--olive); }
+  .kpi .sub {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ─── QUOTE / DISCLAIMER ─── */
+  .disclaimer {
+    background: linear-gradient(135deg, rgba(184,68,47,0.06), rgba(209,141,58,0.06));
+    border-left: 4px solid var(--rust);
+    padding: 32px 36px;
+    margin: 32px 0;
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--ink);
+  }
+  .disclaimer strong { font-style: normal; color: var(--rust); }
+  .disclaimer .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-style: normal;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--rust);
+    color: var(--paper);
+    padding: 4px 10px;
+    margin-bottom: 16px;
+  }
+
+  /* ─── CTA / DASHBOARD LINK ─── */
+  .cta {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 80px 8vw;
+    text-align: center;
+  }
+  .cta h2 {
+    color: var(--paper);
+    margin: 0 auto 32px;
+    text-align: center;
+  }
+  .cta h2 em { color: var(--gold); }
+  .cta .lead {
+    color: rgba(245,241,232,0.75);
+    margin: 0 auto 48px;
+    text-align: center;
+  }
+  .btn-dashboard {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--ink);
+    padding: 20px 48px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-decoration: none;
+    border: 2px solid var(--gold);
+    transition: all 0.3s;
+  }
+  .btn-dashboard:hover {
+    background: transparent;
+    color: var(--gold);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    color: rgba(245,241,232,0.5);
+    padding: 40px 8vw;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(245,241,232,0.1);
+  }
+  footer .brand { color: var(--gold); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .cover-bottom, .acid-grid, .audience-grid, .skills-grid, .kpi-row {
+      grid-template-columns: 1fr 1fr;
+    }
+    .finding-row {
+      grid-template-columns: 50px 1fr;
+      grid-template-areas: 'num text' '. source' '. sev';
+    }
+    .finding-num { grid-area: num; }
+    .finding-text { grid-area: text; }
+    .finding-source { grid-area: source; }
+    .severity { grid-area: sev; justify-self: start; }
+    section { padding: 60px 6vw; }
+    .cover { padding: 60px 6vw 40px; }
+  }
+  @media (max-width: 600px) {
+    .cover-bottom, .acid-grid, .audience-grid, .skills-grid, .kpi-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ CAPA ═══════════════════════════════ -->
+<div class="cover">
+  <div class="cover-top">
+    <div>
+      <span class="label">Relatório Executivo</span>
+      <span>Edição #001 — Maio 2026</span>
+    </div>
+    <div style="text-align:right;">
+      <span class="label">Classificação</span>
+      <span>Laboratório · Educacional · Público</span>
+    </div>
+  </div>
+
+  <div class="cover-mid">
+    <div class="eyebrow">Laboratório Oracle 19c · IA Claude · Skills DBA</div>
+    <h1 class="title">
+      Administração de banco<br>
+      <em>de dados Oracle</em><br>
+      <strong>orquestrada por IA.</strong>
+    </h1>
+    <p class="subtitle">
+      Um estudo prático de Database Administration em Oracle 19c Enterprise Edition,
+      conduzido por nove skills especializadas e operadas pelo modelo Claude da Anthropic
+      — pensado para gestores, CIOs e estudantes de TI que querem entender
+      como a IA agêntica está transformando o ofício do DBA.
+    </p>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="meta-block">
+      <div class="label">Plataforma</div>
+      <div class="value">Oracle 19c EE</div>
+    </div>
+    <div class="meta-block">
+      <div class="label">Skills executadas</div>
+      <div class="value">9 agentes</div>
+    </div>
+    <div class="meta-block">
+      <div class="label">Achados</div>
+      <div class="value">20 itens</div>
+    </div>
+    <div class="meta-block">
+      <div class="label">Score geral</div>
+      <div class="value">6 / 10</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ 1. CONTEXTO ═══════════════════════════ -->
+<section>
+  <div class="section-num">§ 01 / 06</div>
+  <div class="eyebrow">O contexto</div>
+  <h2>Um <em>laboratório</em> deliberadamente imperfeito.</h2>
+  <p class="lead">
+    Este relatório documenta uma sessão real de administração Oracle conduzida em um
+    ambiente controlado — uma máquina virtual Oracle Linux 8 rodando três instâncias
+    de banco em paralelo, configurada para fins <em>exclusivamente didáticos</em>.
+  </p>
+
+  <div class="disclaimer">
+    <div class="tag">Aviso importante</div>
+    Trata-se de um <strong>laboratório de testes controlado</strong>. Todas as
+    vulnerabilidades de segurança, alertas de capacidade e configurações fora do
+    padrão foram <strong>deliberadamente deixadas sem hardening</strong> para servir
+    de base aos exercícios práticos. Nenhum dado real ou sensível existe neste ambiente.
+    Os achados aqui descritos não representam falhas operacionais, e sim
+    <strong>oportunidades pedagógicas</strong> mapeadas pelas skills de auditoria.
+  </div>
+
+  <h3 style="margin-top:48px;">ACID — os quatro pilares que governam o ambiente</h3>
+  <p>
+    O laboratório foi montado para demonstrar o cumprimento das quatro propriedades
+    fundamentais que todo banco de dados transacional precisa garantir. Em Oracle,
+    essas propriedades não são "boas práticas" — são contratos que o motor honra
+    em cada commit. Compreendê-las é o ponto de partida para qualquer conversa
+    sobre confiabilidade de dados.
+  </p>
+
+  <div class="acid-grid">
+    <div class="acid-card">
+      <div class="letter">A</div>
+      <div class="word">Atomicidade</div>
+      <div class="desc">
+        Uma transação acontece por inteiro ou não acontece. Não existe meio caminho.
+        Garantida pelos <em>undo segments</em> do Oracle, que permitem desfazer
+        qualquer operação interrompida antes do commit.
+      </div>
+    </div>
+    <div class="acid-card">
+      <div class="letter">C</div>
+      <div class="word">Consistência</div>
+      <div class="desc">
+        O banco passa sempre de um estado válido para outro estado válido.
+        Constraints, triggers, foreign keys e regras de integridade são o aparato
+        que o Oracle aplica em cada operação DML.
+      </div>
+    </div>
+    <div class="acid-card">
+      <div class="letter">I</div>
+      <div class="word">Isolamento</div>
+      <div class="desc">
+        Transações concorrentes não enxergam dados sujos umas das outras.
+        O Oracle implementa via MVCC (Multi-Version Concurrency Control),
+        servindo leituras consistentes a partir de undo blocks.
+      </div>
+    </div>
+    <div class="acid-card">
+      <div class="letter">D</div>
+      <div class="word">Durabilidade</div>
+      <div class="desc">
+        Uma vez confirmada, a transação sobrevive a qualquer falha — energia,
+        crash, desastre. Os <em>redo logs</em> e o <em>archivelog mode</em> são
+        a espinha dorsal dessa garantia em Oracle.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 2. PÚBLICO ═══════════════════════════ -->
+<section class="alt">
+  <div class="section-num">§ 02 / 06</div>
+  <div class="eyebrow">Para quem é este relatório</div>
+  <h2>Quatro <em>olhares</em>, um mesmo banco.</h2>
+  <p class="lead">
+    O conteúdo foi estruturado para falar com diferentes níveis de senioridade e
+    diferentes interesses sobre o mesmo conjunto de evidências.
+  </p>
+
+  <div class="audience-grid">
+    <div class="audience-card">
+      <div class="role">Gestores</div>
+      <h3>O painel de controle</h3>
+      <p>
+        Indicadores agregados, score de saúde por dimensão e plano de ação priorizado.
+        Permite responder "como está o ambiente?" em 30 segundos.
+      </p>
+    </div>
+    <div class="audience-card">
+      <div class="role">CIOs &amp; Heads</div>
+      <h3>O caso de negócio</h3>
+      <p>
+        Riscos de licenciamento, exposição de segurança, custo-benefício de upgrades
+        e a tese de que a IA agêntica multiplica o trabalho do DBA sênior.
+      </p>
+    </div>
+    <div class="audience-card">
+      <div class="role">Estudantes de TI</div>
+      <h3>O passo-a-passo</h3>
+      <p>
+        Comandos reais, resultados reais, decisões reais. Cada skill é uma aula
+        sobre uma área específica — de tablespaces a HugePages.
+      </p>
+    </div>
+    <div class="audience-card">
+      <div class="role">DBAs Juniores</div>
+      <h3>O playbook</h3>
+      <p>
+        Checklists prontos, queries de diagnóstico e o método de orquestração
+        multi-agente que pode ser replicado em outros ambientes Oracle.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 3. ARQUITETURA ═══════════════════════════ -->
+<section>
+  <div class="section-num">§ 03 / 06</div>
+  <div class="eyebrow">A topologia</div>
+  <h2>Três <em>instâncias</em>, um único servidor.</h2>
+  <p class="lead">
+    O laboratório roda em um host Oracle Linux 8 com 3,5 GB de RAM e 2 cores Intel,
+    hospedando simultaneamente um banco primário, uma duplicata RMAN e um standby
+    físico Data Guard. É a estrutura mínima para praticar cenários realistas de
+    alta disponibilidade.
+  </p>
+
+  <div class="arch-diagram">
+<span class="host">ol8-dba.localdomain</span> <span class="com">(Oracle Linux 8 · Kernel 5.15 · 3.5 GB RAM · 2 cores Intel)</span>
+│
+├─ <span class="pri">[ orcl ]</span> PRIMARY                   <span class="com">— CDB + 1 PDB (ORCLPDB)</span>
+│    ├─ Container Database (CDB$ROOT)
+│    ├─ PDB$SEED ......... READ ONLY  <span class="com">(template)</span>
+│    ├─ ORCLPDB .......... READ WRITE <span class="com">(banco da aplicação)</span>
+│    ├─ Archive → FRA      <span class="com">(/u01/fast_recovery_area)</span>
+│    ├─ Archive → standby  <span class="com">(ASYNC, LGWR)</span>
+│    └─ SGA: 956 MB · PGA: 654 MB
+│
+├─ <span class="dup">[ ORCLDUP ]</span> DUPLICATE              <span class="com">— RMAN duplicate (treino de restore)</span>
+│    └─ SGA: 400 MB
+│
+└─ <span class="std">[ ORCL_ST ]</span> PHYSICAL STANDBY       <span class="com">— Data Guard em MOUNTED + MRP</span>
+     └─ SGA: 956 MB
+
+<span class="com">Backups RMAN:</span> /u02/orcl_backup/ <span class="com">(incremental · retenção 7d · compressão BASIC)</span>
+<span class="com">Listener:</span>     porta 1521 <span class="com">(serviços: orcl, orclpdb, orcl_st)</span>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">Instâncias ativas</div>
+      <div class="value">3</div>
+      <div class="sub">primary + duplicate + standby</div>
+    </div>
+    <div class="kpi">
+      <div class="label">SGA total alocado</div>
+      <div class="value">2.3<span style="font-size:24px;">GB</span></div>
+      <div class="sub">soma das três instâncias</div>
+    </div>
+    <div class="kpi">
+      <div class="label">PDBs no primário</div>
+      <div class="value ok">1</div>
+      <div class="sub">dentro da licença gratuita</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Modo de proteção</div>
+      <div class="value" style="font-size:32px;">MAX<br>PERF</div>
+      <div class="sub">Data Guard async</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 4. METODOLOGIA ═══════════════════════════ -->
+<section class="dark">
+  <div class="section-num">§ 04 / 06</div>
+  <div class="eyebrow">A metodologia</div>
+  <h2>Nove <em>skills</em>, uma orquestradora.</h2>
+  <p class="lead">
+    Cada área crítica do trabalho de um DBA Oracle foi encapsulada em uma skill — um
+    módulo especializado com prompts, queries e critérios de diagnóstico próprios.
+    A nona skill, <em>central-agentes</em>, é o maestro: consolida os achados das
+    outras oito em um relatório executivo único.
+  </p>
+
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="num">01</div>
+      <h3>check-oracle-health</h3>
+      <p>Health check completo: tablespaces, sessões, wait events, SGA/PGA, jobs do scheduler e alert log.</p>
+      <div class="verdict" style="color:#f0b429;">▲ FRA em 79%, backups com falha</div>
+    </div>
+    <div class="skill-card">
+      <div class="num">02</div>
+      <h3>gerenciar-tablespaces</h3>
+      <p>Criação, redimensionamento e gestão de tablespaces — permanent, temp, undo e bigfile.</p>
+      <div class="verdict" style="color:#56d364;">● Espaço saudável, UNDO ajustável</div>
+    </div>
+    <div class="skill-card">
+      <div class="num">03</div>
+      <h3>gerenciar-redo-logs</h3>
+      <p>Dimensionamento, multiplexação e redimensionamento de online redo logs.</p>
+      <div class="verdict" style="color:#ff7b72;">▼ Sem multiplexing — risco alto</div>
+    </div>
+    <div class="skill-card">
+      <div class="num">04</div>
+      <h3>criar-pdbs</h3>
+      <p>Provisionamento e administração de Pluggable Databases em arquitetura Multitenant.</p>
+      <div class="verdict" style="color:#f0b429;">▲ PDB sem SAVE STATE</div>
+    </div>
+    <div class="skill-card">
+      <div class="num">05</div>
+      <h3>configurar-hugepages</h3>
+      <p>Configuração de HugePages no Linux para otimização de memória SGA do Oracle.</p>
+      <div class="verdict" style="color:#ff7b72;">▼ Não configurado (4K pages)</div>
+    </div>
+    <div class="skill-card">
+      <div class="num">06</div>
+      <h3>auditoria-seguranca</h3>
+      <p>Hardening, Unified Auditing, TDE, perfis de senha e revisão de privilégios excessivos.</p>
+      <div class="verdict" style="color:#ff7b72;">▼ Senha default, PUBLIC exposto</div>
+    </div>
+    <div class="skill-card">
+      <div class="num">07</div>
+      <h3>capacity-planning</h3>
+      <p>Projeção de crescimento de tablespaces, FRA, sessões e CPU via dados de AWR.</p>
+      <div class="verdict" style="color:#f0b429;">▲ FRA esgota em ~11 dias</div>
+    </div>
+    <div class="skill-card">
+      <div class="num">08</div>
+      <h3>licenciamento-oracle</h3>
+      <p>Auditoria de edition, options pagas e features ativas via DBA_FEATURE_USAGE_STATISTICS.</p>
+      <div class="verdict" style="color:#58a6ff;">● 1 licença Processor · revisar packs</div>
+    </div>
+    <div class="skill-card" style="border-color:#c8a049; background:rgba(200,160,73,0.08);">
+      <div class="num" style="color:#c8a049;">09 · ORCHESTRATOR</div>
+      <h3>central-agentes</h3>
+      <p>Orquestrador multi-agente. Consolida o output das oito skills em um plano executivo priorizado.</p>
+      <div class="verdict" style="color:#c8a049;">★ Sintetiza · prioriza · entrega</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 5. PRINTS PRINCIPAIS ═══════════════════════════ -->
+<section>
+  <div class="section-num">§ 05 / 06</div>
+  <div class="eyebrow">A evidência</div>
+  <h2>Os <em>prints</em> que contam a história.</h2>
+  <p class="lead">
+    Selecionamos cinco recortes da sessão real de Claude Code, cada um demonstrando
+    o output direto de uma skill em ação contra o banco <em>orcl</em>. São as
+    evidências que sustentam os achados deste relatório.
+  </p>
+
+  <!-- PRINT 1: HEALTH CHECK -->
+  <h4>Print #01 — Health check do banco primário</h4>
+  <h3>Skill <code style="font-family:'JetBrains Mono',monospace; background:var(--paper-2); padding:2px 8px; border-radius:3px; font-size:18px;">check-oracle-health</code> resume o estado geral em 11 blocos</h3>
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="terminal-dot dot-r"></div>
+      <div class="terminal-dot dot-y"></div>
+      <div class="terminal-dot dot-g"></div>
+      <div class="terminal-title">claude-code — ❯ check-oracle-health</div>
+    </div>
+    <div class="terminal-body"><span class="t-prompt">❯</span> <span class="t-cmd">check-oracle-health</span>
+
+<span class="t-line">●</span> <span class="t-info">Skill(check-oracle-health)</span>
+  <span class="t-line">⎿</span>  <span class="t-ok">Successfully loaded skill</span>
+
+<span class="t-line">●</span> Vou executar o health check completo agora.
+
+<span class="t-line">────────────────────────────────────────────────────────────</span>
+              <span class="t-key">RESULTADO — orcl (2026-05-18)</span>
+<span class="t-line">────────────────────────────────────────────────────────────</span>
+
+  Bloco                   Situação      Observação
+  ─────────────────────   ──────────    ─────────────────────────────────
+  Status básico           <span class="t-ok">OK</span>            OPEN / ARCHIVELOG / Flashback ON
+  Tablespaces             <span class="t-ok">OK</span>            Máximo 23% (SYSTEM)
+  FRA                     <span class="t-warn">ATENÇÃO</span>       79.27% usada (7.93 GB de 10 GB)
+  Sessões / Locks         <span class="t-ok">OK</span>            1 sessão ativa, sem bloqueios
+  Wait events             <span class="t-ok">OK</span>            Perfil normal (Data Guard ativo)
+  SGA / PGA               <span class="t-ok">OK</span>            Buffer Hit Ratio 97.26%
+  Archivelog              <span class="t-ok">OK</span>            Geração normal, 2 destinos VALID
+  Jobs Scheduler          <span class="t-ok">OK</span>            Sem falhas nos últimos 7 dias
+  Backups RMAN            <span class="t-warn">ATENÇÃO</span>       1 backup FAILED + 2 WARNINGS
+  Objetos inválidos       <span class="t-ok">OK</span>            Nenhum
+  Alert log               <span class="t-crit">INVESTIGAR</span>    ORA-01210 / ORA-01565 históricos</div>
+  </div>
+  <div class="print-caption">Saída resumida do bloco final da skill check-oracle-health · 18/05/2026 · 03:43 UTC</div>
+
+  <!-- PRINT 2: TABLESPACES -->
+  <h4 style="margin-top:60px;">Print #02 — Diagnóstico de tablespaces</h4>
+  <h3>Skill <code style="font-family:'JetBrains Mono',monospace; background:var(--paper-2); padding:2px 8px; border-radius:3px; font-size:18px;">gerenciar-tablespaces</code> identifica oportunidades de tuning de UNDO</h3>
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="terminal-dot dot-r"></div>
+      <div class="terminal-dot dot-y"></div>
+      <div class="terminal-dot dot-g"></div>
+      <div class="terminal-title">claude-code — ❯ gerenciar-tablespaces</div>
+    </div>
+    <div class="terminal-body"><span class="t-prompt">❯</span> <span class="t-cmd">gerenciar-tablespaces</span>
+
+<span class="t-line">●</span> <span class="t-info">Skill(gerenciar-tablespaces)</span>
+  <span class="t-line">⎿</span>  <span class="t-ok">Successfully loaded skill</span>
+
+  Tablespace      Usado     Livre       %       Status
+  ──────────      ──────    ────────    ─────   ──────
+  SYSTEM          907 MB    2.957 MB    23%     <span class="t-ok">OK</span>
+  SYSAUX          580 MB    3.284 MB    15%     <span class="t-ok">OK</span>
+  USERS             3 MB    3.862 MB    0,07%   <span class="t-ok">OK</span>
+  TEMP              2 MB    3.863 MB    0,05%   <span class="t-ok">OK</span>
+  UNDOTBS1            —          —      —       <span class="t-ok">OK</span>
+
+<span class="t-key">Recomendações geradas pela IA:</span>
+
+  <span class="t-warn">1.</span> UNDOTBS1 tem 242 MB recuperáveis — candidato a RESIZE
+     <span class="t-muted">ALTER DATABASE DATAFILE '/u02/oradata/ORCL/undotbs01.dbf' RESIZE 80M;</span>
+
+  <span class="t-warn">2.</span> UNDO retention em 900s — advisor sugere 2400s
+     <span class="t-muted">ALTER SYSTEM SET undo_retention = 2400 SCOPE=BOTH;</span>
+
+  <span class="t-warn">3.</span> Autoextend sem MAXSIZE definido (risco operacional)
+     <span class="t-muted">ALTER DATABASE DATAFILE ... AUTOEXTEND ON NEXT 10M MAXSIZE 4G;</span></div>
+  </div>
+  <div class="print-caption">Output sintetizado de gerenciar-tablespaces · diagnóstico + recomendações automatizadas</div>
+
+  <!-- PRINT 3: REDO LOGS -->
+  <h4 style="margin-top:60px;">Print #03 — Online redo logs</h4>
+  <h3>Skill <code style="font-family:'JetBrains Mono',monospace; background:var(--paper-2); padding:2px 8px; border-radius:3px; font-size:18px;">gerenciar-redo-logs</code> aponta ausência de multiplexing</h3>
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="terminal-dot dot-r"></div>
+      <div class="terminal-dot dot-y"></div>
+      <div class="terminal-dot dot-g"></div>
+      <div class="terminal-title">claude-code — ❯ gerenciar-redo-logs</div>
+    </div>
+    <div class="terminal-body"><span class="t-prompt">❯</span> <span class="t-cmd">gerenciar-redo-logs</span>
+
+  Group   Thread   Tamanho   Members   Status        Arquivado
+  ─────   ──────   ───────   ───────   ──────────    ─────────
+  1       1        200 MB    <span class="t-crit">1</span>         INACTIVE      <span class="t-ok">YES</span>
+  2       1        200 MB    <span class="t-crit">1</span>         CURRENT       NO
+  3       1        200 MB    <span class="t-crit">1</span>         INACTIVE      <span class="t-ok">YES</span>
+  4 (SRL) 1        200 MB    —         UNASSIGNED    <span class="t-ok">—</span>
+  5 (SRL) 1        200 MB    —         UNASSIGNED    <span class="t-ok">—</span>
+  6 (SRL) 0        200 MB    —         UNASSIGNED    <span class="t-ok">—</span>
+  7 (SRL) 0        200 MB    —         UNASSIGNED    <span class="t-ok">—</span>
+
+<span class="t-crit">▼ DIAGNÓSTICO CRÍTICO</span>
+
+  Cada group tem apenas <span class="t-crit">1 member</span>. Se o arquivo de redo for
+  corrompido ou o disco falhar, o banco para com ORA-00313.
+
+  Para um banco primário em produção com Data Guard, isso é
+  <span class="t-crit">inaceitável</span>. Solução:
+
+  <span class="t-info">ALTER DATABASE ADD LOGFILE MEMBER '/u03/oradata/ORCL/redo01b.log'
+    TO GROUP 1;</span>
+
+<span class="t-warn">▲ ATENÇÃO DE PERFORMANCE</span>
+
+  Pico de 15 switches/hora às 22h (1 switch a cada 4 min).
+  Logs de 200 MB são <span class="t-warn">pequenos</span> para o pico observado.
+  Recomendação: redimensionar para 500 MB–1 GB.</div>
+  </div>
+  <div class="print-caption">Diagnóstico de redo logs com identificação de risco de single point of failure</div>
+
+  <!-- PRINT 4: SEGURANÇA -->
+  <h4 style="margin-top:60px;">Print #04 — Auditoria de segurança</h4>
+  <h3>Skill <code style="font-family:'JetBrains Mono',monospace; background:var(--paper-2); padding:2px 8px; border-radius:3px; font-size:18px;">auditoria-seguranca</code> revela violações deliberadamente plantadas</h3>
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="terminal-dot dot-r"></div>
+      <div class="terminal-dot dot-y"></div>
+      <div class="terminal-dot dot-g"></div>
+      <div class="terminal-title">claude-code — ❯ auditoria-seguranca</div>
+    </div>
+    <div class="terminal-body"><span class="t-prompt">❯</span> <span class="t-cmd">auditoria-seguranca</span>
+
+  Área                              Status                          Criticidade
+  ────────────────────────────────  ──────────────────────────────  ───────────
+  Modo de auditoria                 Mixed Mode                      <span class="t-warn">Médio</span>
+  Policies ativas                   ORA_SECURECONFIG + LOGON_FAIL   <span class="t-ok">OK</span>
+  Contas com senha default          <span class="t-crit">CTXSYS com senha default</span>          <span class="t-crit">CRÍTICO</span>
+  Permissões PUBLIC em pacotes      11 pacotes expostos             <span class="t-crit">ALTO</span>
+  Profile de senha (DEFAULT)        Sem PASSWORD_VERIFY_FUNCTION    <span class="t-crit">ALTO</span>
+  sqlnet.ora / listener.ora         Sem criptografia de rede        <span class="t-crit">ALTO</span>
+  remote_os_authent                 FALSE                           <span class="t-ok">OK</span>
+  sec_case_sensitive_logon          TRUE                            <span class="t-ok">OK</span>
+
+<span class="t-crit">▼ CRÍTICO — Ação imediata</span>
+
+  <span class="t-muted">-- 1. Trocar senha default do CTXSYS</span>
+  <span class="t-info">ALTER USER ctxsys IDENTIFIED BY "&lt;senha_complexa&gt;" ACCOUNT LOCK;</span>
+
+  <span class="t-muted">-- 2. Revogar PUBLIC dos pacotes sensíveis</span>
+  <span class="t-info">REVOKE EXECUTE ON SYS.UTL_HTTP  FROM PUBLIC;</span>
+  <span class="t-info">REVOKE EXECUTE ON SYS.UTL_TCP   FROM PUBLIC;</span>
+  <span class="t-info">REVOKE EXECUTE ON SYS.UTL_SMTP  FROM PUBLIC;</span>
+  <span class="t-info">REVOKE EXECUTE ON SYS.DBMS_SQL  FROM PUBLIC;</span>
+  <span class="t-muted">-- + 7 outros pacotes</span></div>
+  </div>
+  <div class="print-caption">Hardening gap analysis · 14 itens auditados · 4 violações críticas/altas detectadas</div>
+
+  <!-- PRINT 5: ORQUESTRADOR -->
+  <h4 style="margin-top:60px;">Print #05 — A orquestradora consolida tudo</h4>
+  <h3>Skill <code style="font-family:'JetBrains Mono',monospace; background:var(--paper-2); padding:2px 8px; border-radius:3px; font-size:18px;">central-agentes</code> entrega o relatório executivo priorizado</h3>
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="terminal-dot dot-r"></div>
+      <div class="terminal-dot dot-y"></div>
+      <div class="terminal-dot dot-g"></div>
+      <div class="terminal-title">claude-code — ❯ central-agentes</div>
+    </div>
+    <div class="terminal-body"><span class="t-prompt">❯</span> <span class="t-cmd">central-agentes</span>
+
+<span class="t-line">●</span> Durante esta sessão executei todas as 8 skills individuais
+  do pacote oracle-admin-skills. A central-agentes é o
+  orquestrador — vou consolidar todos os achados em um
+  relatório executivo único, priorizando por criticidade.
+
+<span class="t-key">═══════════════════════════════════════════════════════════</span>
+       <span class="t-key">PLANO DE EXECUÇÃO RECOMENDADO</span>
+<span class="t-key">═══════════════════════════════════════════════════════════</span>
+
+<span class="t-crit">Semana 1 (emergência):</span>
+  ├── [1] Liberar FRA via RMAN
+  ├── [2] Trocar senha CTXSYS
+  └── [8] Investigar e reexecutar backups com falha
+
+<span class="t-warn">Semana 1 (segurança):</span>
+  ├── [4] Revogar PUBLIC de UTL_*/DBMS_SQL
+  ├── [5] Habilitar PASSWORD_VERIFY_FUNCTION
+  └── [6] Criar sqlnet.ora com criptografia de rede
+
+<span class="t-warn">Semana 2 (infraestrutura):</span>
+  ├── [3] Configurar HugePages (vm.nr_hugepages=1306)
+  ├── [7] Adicionar segundo member nos redo logs
+  └── [12] SAVE STATE no ORCLPDB
+
+<span class="t-info">Semana 3-4 (otimização):</span>
+  ├── [9]  Redimensionar redo logs para 500 MB
+  ├── [10] Definir MAXSIZE nos datafiles
+  ├── [11] Redimensionar UNDOTBS1
+  ├── [13] Ajustar undo_retention para 2400s
+  └── [16] Aumentar retenção AWR para 90 dias
+
+<span class="t-info">Próximo ciclo (planejamento estratégico):</span>
+  ├── [17] Atualizar para RU 19.18+ antes de criar 2º PDB
+  └── [18] Confirmar licenciamento Diagnostic+Tuning</div>
+  </div>
+  <div class="print-caption">A orquestradora cruza o output de 8 skills e produz um roadmap acionável de 4 semanas</div>
+</section>
+
+<!-- ═══════════════════════════ 6. ACHADOS ═══════════════════════════ -->
+<section class="alt">
+  <div class="section-num">§ 06 / 06</div>
+  <div class="eyebrow">Os achados consolidados</div>
+  <h2>Vinte <em>oportunidades</em> mapeadas pela IA.</h2>
+  <p class="lead">
+    A lista abaixo é o produto final da skill orquestradora: a totalidade dos
+    achados de todas as outras oito, ordenada por criticidade e cruzada para
+    eliminar duplicidades.
+  </p>
+
+  <div class="findings">
+    <div class="finding-row">
+      <div class="finding-num">01</div>
+      <div class="finding-text">
+        <h4>FRA em 79% — esgota em ~11 dias</h4>
+        <p>Fast Recovery Area com 7,93 GB usados de 10 GB. Backup pieces ocupam 71% do espaço total.</p>
+      </div>
+      <div class="finding-source">check-oracle-health<br>capacity-planning</div>
+      <div class="severity sev-crit">Crítico</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">02</div>
+      <div class="finding-text">
+        <h4>CTXSYS com senha default</h4>
+        <p>Conta administrativa do Oracle Text rodando com credencial pública conhecida.</p>
+      </div>
+      <div class="finding-source">auditoria-seguranca</div>
+      <div class="severity sev-crit">Crítico</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">03</div>
+      <div class="finding-text">
+        <h4>HugePages = 0 — banco rodando em 4K pages</h4>
+        <p>vm.nr_hugepages no kernel zerado. Três instâncias somando 2,3 GB de SGA sem large pages.</p>
+      </div>
+      <div class="finding-source">configurar-hugepages</div>
+      <div class="severity sev-crit">Crítico</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">04</div>
+      <div class="finding-text">
+        <h4>11 pacotes sensíveis expostos no PUBLIC</h4>
+        <p>UTL_HTTP, UTL_TCP, UTL_SMTP, UTL_FILE, DBMS_SQL, DBMS_SCHEDULER e outros 5 acessíveis a qualquer usuário.</p>
+      </div>
+      <div class="finding-source">auditoria-seguranca</div>
+      <div class="severity sev-high">Alto</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">05</div>
+      <div class="finding-text">
+        <h4>Profile DEFAULT sem PASSWORD_VERIFY_FUNCTION</h4>
+        <p>Política de complexidade de senha não está sendo aplicada para nenhum usuário com profile default.</p>
+      </div>
+      <div class="finding-source">auditoria-seguranca</div>
+      <div class="severity sev-high">Alto</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">06</div>
+      <div class="finding-text">
+        <h4>sqlnet.ora ausente — tráfego sem criptografia</h4>
+        <p>Conexões cliente-servidor trafegam credenciais e dados em texto plano na rede.</p>
+      </div>
+      <div class="finding-source">auditoria-seguranca</div>
+      <div class="severity sev-high">Alto</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">07</div>
+      <div class="finding-text">
+        <h4>Redo logs sem multiplexing</h4>
+        <p>Cada um dos 3 grupos tem apenas 1 member. Falha de disco causa ORA-00313 e parada total do banco.</p>
+      </div>
+      <div class="finding-source">gerenciar-redo-logs</div>
+      <div class="severity sev-high">Alto</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">08</div>
+      <div class="finding-text">
+        <h4>Backup RMAN com FAILED + 2 WARNINGS</h4>
+        <p>Job de 17/05 16:59 terminou em FAILED. Outros dois com COMPLETED WITH WARNINGS — provavelmente ORA-19773.</p>
+      </div>
+      <div class="finding-source">check-oracle-health</div>
+      <div class="severity sev-high">Alto</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">09</div>
+      <div class="finding-text">
+        <h4>Redo logs com 200 MB — pico de 15 switches/hora</h4>
+        <p>Tamanho atual produz switches a cada 4 min no pico. Ideal seria 15-20 min entre switches.</p>
+      </div>
+      <div class="finding-source">gerenciar-redo-logs</div>
+      <div class="severity sev-med">Médio</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">10</div>
+      <div class="finding-text">
+        <h4>Autoextend ilimitado em todos os datafiles</h4>
+        <p>MAXSIZE = 32 GB (limite técnico do Oracle) equivale a UNLIMITED. Runaway job pode encher o disco.</p>
+      </div>
+      <div class="finding-source">gerenciar-tablespaces</div>
+      <div class="severity sev-med">Médio</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">11</div>
+      <div class="finding-text">
+        <h4>UNDOTBS1 com 242 MB recuperáveis</h4>
+        <p>Datafile UNDO ocupando 285 MB mas usando apenas 43 MB no mínimo.</p>
+      </div>
+      <div class="finding-source">gerenciar-tablespaces</div>
+      <div class="severity sev-med">Médio</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">12</div>
+      <div class="finding-text">
+        <h4>ORCLPDB sem SAVE STATE</h4>
+        <p>PDB volta para MOUNTED em qualquer restart do CDB. Aplicação fica fora do ar até intervenção manual.</p>
+      </div>
+      <div class="finding-source">criar-pdbs</div>
+      <div class="severity sev-med">Médio</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">13</div>
+      <div class="finding-text">
+        <h4>undo_retention=900s — risco de ORA-01555</h4>
+        <p>Advisor detectou queries de até 25 min. Snapshot too old é questão de tempo com retention atual.</p>
+      </div>
+      <div class="finding-source">gerenciar-tablespaces</div>
+      <div class="severity sev-med">Médio</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">14</div>
+      <div class="finding-text">
+        <h4>Falhas de login do DGMGRL</h4>
+        <p>Broker Data Guard tentando conectar com credencial errada às 01:05h. Replicação em risco.</p>
+      </div>
+      <div class="finding-source">auditoria-seguranca</div>
+      <div class="severity sev-med">Médio</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">15</div>
+      <div class="finding-text">
+        <h4>Usuário HR com profile DEFAULT</h4>
+        <p>Sem limite de tentativas de login, sem expiração de senha, sem política de complexidade.</p>
+      </div>
+      <div class="finding-source">criar-pdbs<br>auditoria-seguranca</div>
+      <div class="severity sev-med">Médio</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">16</div>
+      <div class="finding-text">
+        <h4>AWR com apenas 2 dias de histórico</h4>
+        <p>Insuficiente para projeções confiáveis de capacity planning. Recomendação: 90 dias.</p>
+      </div>
+      <div class="finding-source">capacity-planning</div>
+      <div class="severity sev-info">Planejar</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">17</div>
+      <div class="finding-text">
+        <h4>Versão 19.3 sem isenção de 3 PDBs gratuitos</h4>
+        <p>A isenção só existe a partir do RU 19.18. Criar 2º PDB hoje exige Multitenant Option paga.</p>
+      </div>
+      <div class="finding-source">licenciamento-oracle</div>
+      <div class="severity sev-info">Planejar</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">18</div>
+      <div class="finding-text">
+        <h4>Diagnostic + Tuning Pack ativos</h4>
+        <p>control_management_pack_access=DIAGNOSTIC+TUNING habilita features pagas. Confirmar contrato.</p>
+      </div>
+      <div class="finding-source">licenciamento-oracle</div>
+      <div class="severity sev-info">Planejar</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">19</div>
+      <div class="finding-text">
+        <h4>memlock sem entrada explícita em limits.conf</h4>
+        <p>Ulimit atual está OK, mas o controle não está versionado em arquivo.</p>
+      </div>
+      <div class="finding-source">configurar-hugepages</div>
+      <div class="severity sev-info">Planejar</div>
+    </div>
+
+    <div class="finding-row">
+      <div class="finding-num">20</div>
+      <div class="finding-text">
+        <h4>SYSTEM e SYSAUX com growth aparente alto</h4>
+        <p>411 MB/dia e 166 MB/dia — provavelmente artefato da fase de setup. Remonitorar após 30 dias.</p>
+      </div>
+      <div class="finding-source">capacity-planning</div>
+      <div class="severity sev-info">Planejar</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ CTA ═══════════════════════════ -->
+<div class="cta">
+  <div class="eyebrow" style="justify-content:center; display:flex; color:var(--gold);">Próxima parada</div>
+  <h2>Veja todos os números em <em>movimento</em>.</h2>
+  <p class="lead">
+    O relatório acima conta a história. O dashboard interativo coloca cada métrica
+    em gráfico, cada achado em contexto, cada score na sua dimensão.
+  </p>
+  <a href="dashboard.html" class="btn-dashboard">→ Abrir Dashboard Oracle</a>
+</div>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer>
+  <div>
+    <span class="brand">Oracle DBA Lab Report</span> &nbsp;·&nbsp; ol8-dba.localdomain &nbsp;·&nbsp; 19.3.0.0.0 EE
+  </div>
+  <div>
+    Gerado com Claude (Anthropic) &nbsp;·&nbsp; 9 skills · 20 achados · 2026-05-22
+  </div>
+</footer>
+
+</body>
+</html>
