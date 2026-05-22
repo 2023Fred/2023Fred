@@ -38,7 +38,7 @@ Sou **Administrador de Banco de Dados Oracle SQL (DBA)** com foco em garantir **
       <h3>📊 Relatório Executivo</h3>
       <p><b>Para Gestores e CIOs</b></p>
       <p>Visão estratégica, KPIs, governança de TI e proposta de valor para o negócio.</p>
-      <a href="https://htmlpreview.github.io/?https://github.com/2023Fred/2023Fred/blob/main/relatorio-executivo.html">
+      <a href="./relatorio-executivo.md">
         <img src="https://img.shields.io/badge/%F0%9F%93%84%20Acessar%20Relat%C3%B3rio-F80000?style=for-the-badge&logo=adobeacrobatreader&logoColor=white"/>
       </a>
     </td>
