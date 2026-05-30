@@ -91,6 +91,16 @@ Sou **Administrador de Banco de Dados Oracle SQL (DBA)** com foco em garantir **
         </a>
       </td>
     </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <h3>🏢 Oracle 19c Multitenant — Relatório Técnico Executivo</h3>
+        <p><b>Para Gestores, CIOs e Líderes Técnicos Oracle</b></p>
+        <p>Relatório completo sobre a arquitetura Oracle 19c Multitenant (CDB/PDB) — abordando provisionamento de containers, isolamento de pluggable databases, administração de recursos, clonagem de PDBs, migração de bancos non-CDB para CDB e boas práticas de governança em ambientes corporativos de missão crítica.</p>
+        <a href="file:///C:/Users/Fred/Downloads/relatorio_multitenant_oracle19c_3.html">
+          <img src="https://img.shields.io/badge/%F0%9F%8F%A2%20Acessar%20Relat%C3%B3rio%20Multitenant%2019c-F80000?style=for-the-badge&logo=oracle&logoColor=white"/>
+        </a>
+      </td>
+    </tr>
 </table>
 
 <p align="center">
