@@ -81,6 +81,16 @@ Sou **Administrador de Banco de Dados Oracle SQL (DBA)** com foco em garantir **
       </a>
     </td>
   </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <h3>🧠 Oracle SQL Skills 2024 — Relatório de Competências</h3>
+        <p><b>Para Recrutadores, Gestores e Líderes Técnicos</b></p>
+        <p>Relatório detalhado das competências Oracle SQL desenvolvidas em 2024 — cobrindo SQL avançado, PL/SQL, otimização de consultas, tuning de performance e boas práticas de administração Oracle aplicadas em ambientes produtivos.</p>
+        <a href="file:///C:/Users/Fred/Downloads/relatorio_oracle_sql_skills_2024.html">
+          <img src="https://img.shields.io/badge/%F0%9F%93%8A%20Relat%C3%B3rio%20Oracle%20SQL%20Skills%202024-F80000?style=for-the-badge&logo=oracle&logoColor=white"/>
+        </a>
+      </td>
+    </tr>
 </table>
 
 <p align="center">
