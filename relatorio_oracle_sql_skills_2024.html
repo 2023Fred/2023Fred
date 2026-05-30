@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório de Validação — Oracle SQL Skills 2024</title>
+<style>
+  /* ========== TYPOGRAPHY ========== */
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg:        #fbfaf7;
+    --bg-soft:   #f4f1ea;
+    --ink:       #1a1815;
+    --ink-soft:  #4a463f;
+    --ink-mute:  #7a7468;
+    --rule:      #d8d2c4;
+    --rule-soft: #e8e3d6;
+    --amber:     #b8651a;
+    --amber-dk:  #8a4612;
+    --amber-bg:  #faf2e3;
+    --red:       #a8201a;
+    --red-bg:    #fce8e6;
+    --green:     #2d6b3f;
+    --green-bg:  #e6f0e8;
+    --blue:      #1a5a8a;
+    --blue-bg:   #e3eef7;
+    --code-bg:   #1f1d1a;
+    --code-fg:   #f0ebde;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    font-feature-settings: "kern", "liga", "onum";
+    color: var(--ink);
+    background: var(--bg);
+    margin: 0;
+    padding: 0;
+    line-height: 1.55;
+    font-size: 11pt;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 56px 64px;
+    background: var(--bg);
+  }
+
+  /* ========== CABEÇALHO ========== */
+  .header {
+    border-bottom: 3px solid var(--ink);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+
+  .header .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 9pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    font-weight: 600;
+    margin: 0 0 12px 0;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 28pt;
+    font-weight: 600;
+    line-height: 1.1;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.01em;
+  }
+
+  .header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 16pt;
+    color: var(--ink-soft);
+    margin: 0;
+    border: none;
+  }
+
+  /* ========== HIERARQUIA DE TÍTULOS ========== */
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', serif;
+    color: var(--ink);
+    margin-top: 2.2em;
+    margin-bottom: 0.7em;
+    font-weight: 600;
+    page-break-after: avoid;
+  }
+
+  h2 {
+    font-size: 20pt;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 8px;
+    letter-spacing: -0.005em;
+  }
+
+  h3 {
+    font-size: 14pt;
+    color: var(--amber-dk);
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: 11pt;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  /* Divisor horizontal sutil */
+  hr {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 36px 0;
+  }
+
+  /* ========== PARÁGRAFOS E LISTAS ========== */
+  p {
+    margin: 0 0 14px 0;
+    text-align: left;
+    hyphens: auto;
+  }
+
+  p strong, li strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  ul, ol {
+    margin: 0 0 16px 0;
+    padding-left: 28px;
+  }
+
+  li {
+    margin-bottom: 6px;
+  }
+
+  /* ========== TABELAS ========== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px 0;
+    font-size: 10pt;
+    font-family: 'Inter', sans-serif;
+    background: white;
+    border: 1px solid var(--rule);
+    page-break-inside: avoid;
+  }
+
+  thead {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 9.5pt;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 9px 14px;
+    border-top: 1px solid var(--rule-soft);
+    vertical-align: top;
+  }
+
+  tbody tr:nth-child(even) {
+    background: var(--bg-soft);
+  }
+
+  tbody tr:hover {
+    background: var(--amber-bg);
+  }
+
+  td.cell-ok {
+    color: var(--green);
+    font-weight: 500;
+  }
+
+  td.cell-grade {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--amber-dk);
+  }
+
+  /* ========== CÓDIGO ========== */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5pt;
+    background: var(--bg-soft);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--amber-dk);
+    border: 1px solid var(--rule-soft);
+  }
+
+  pre {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    padding: 18px 22px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 18px 0;
+    font-size: 9.5pt;
+    line-height: 1.5;
+    page-break-inside: avoid;
+  }
+
+  pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+    font-size: inherit;
+  }
+
+  /* Bloco ASCII do dashboard precisa de tipografia menor e overflow */
+  pre:has(code) {
+    white-space: pre;
+  }
+
+  /* Detectar bloco ASCII e ajustar */
+  .dashboard-ascii {
+    font-size: 8.5pt;
+    line-height: 1.35;
+  }
+
+  /* ========== BADGES E HIGHLIGHTS ========== */
+  .ora-code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--red-bg);
+    color: var(--red);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 9pt;
+    font-weight: 600;
+    border: 1px solid #e8c9c5;
+  }
+
+  /* ========== METADADOS DO TOPO ========== */
+  .meta-grid {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 4px 18px;
+    margin: 24px 0 32px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 10pt;
+    padding: 18px 22px;
+    background: var(--bg-soft);
+    border-left: 3px solid var(--amber);
+  }
+
+  .meta-grid dt {
+    color: var(--ink-mute);
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 8.5pt;
+    letter-spacing: 0.06em;
+    padding-top: 2px;
+  }
+
+  .meta-grid dd {
+    color: var(--ink);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    border-top: 1px solid var(--rule);
+    margin-top: 48px;
+    padding-top: 20px;
+    color: var(--ink-mute);
+    font-size: 9pt;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+  }
+
+  .footer p {
+    margin-bottom: 4px;
+  }
+
+  /* ========== PRINT ========== */
+  @media print {
+    @page {
+      size: A4;
+      margin: 1.8cm 1.5cm;
+    }
+
+    body { font-size: 9.5pt; }
+
+    .page {
+      padding: 0;
+      max-width: 100%;
+    }
+
+    h2 { page-break-before: auto; page-break-after: avoid; }
+    h3 { page-break-after: avoid; }
+    table, pre { page-break-inside: avoid; }
+
+    a { color: var(--ink); text-decoration: none; }
+
+    .header { margin-top: 0; }
+  }
+
+  /* ========== LINKS ========== */
+  a {
+    color: var(--amber-dk);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber);
+  }
+
+  a:hover {
+    color: var(--amber);
+  }
+
+  /* ========== BLOCKQUOTES ========== */
+  blockquote {
+    margin: 18px 0;
+    padding: 12px 20px;
+    border-left: 3px solid var(--amber);
+    background: var(--amber-bg);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  blockquote p:last-child {
+    margin-bottom: 0;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="header">
+  <p class="eyebrow">Relatório de Validação Técnica · Oracle 19c</p>
+  <h1>Oracle SQL Skills 2024</h1>
+  <h2>Validação em Oracle 19c Multitenant — <code>PDB_APP1 @ CDBLAB</code></h2>
+</header>
+
+<dl class="meta-grid">
+  <dt>Data</dt>           <dd>29 de maio de 2026</dd>
+  <dt>Ambiente</dt>       <dd><code>ol7-dba.localdomain</code> — Oracle Database 19c EE (19.3.0.0.0)</dd>
+  <dt>Schema</dt>         <dd>HR (Human Resources)</dd>
+  <dt>PDB</dt>            <dd><code>PDB_APP1</code> [CON_ID=4] dentro de <code>CDBLAB</code></dd>
+  <dt>Duração</dt>        <dd>~4 horas</dd>
+  <dt>Skills</dt>         <dd>10 validadas · 112 tópicos · 12 erros documentados</dd>
+  <dt>Nota Geral</dt>     <dd>9.4 / 10</dd>
+</dl>
+
+<h2 id="identidade-do-ambiente">Identidade do Ambiente</h2>
+<table>
+<thead>
+<tr>
+<th>Parâmetro</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CDB</td>
+<td><code>CDBLAB</code></td>
+</tr>
+<tr>
+<td>PDB de teste</td>
+<td><code>PDB_APP1</code> [CON_ID=4]</td>
+</tr>
+<tr>
+<td>Versão</td>
+<td>Oracle 19c EE 19.3.0.0.0</td>
+</tr>
+<tr>
+<td>Open Mode</td>
+<td>READ WRITE</td>
+</tr>
+<tr>
+<td>Log Mode</td>
+<td>ARCHIVELOG</td>
+</tr>
+<tr>
+<td>SGA</td>
+<td>1.5 GB</td>
+</tr>
+<tr>
+<td>PGA</td>
+<td>512 MB</td>
+</tr>
+<tr>
+<td>Total PDBs ativos</td>
+<td>7</td>
+</tr>
+<tr>
+<td>FRA</td>
+<td>10.7 / 20 GB (53.6%)</td>
+</tr>
+<tr>
+<td>Disco <code>/u01</code></td>
+<td>45 / 50 GB (90%)</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>ol7-dba.localdomain</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="schema-hr-estado-final">Schema HR — Estado Final</h2>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total de funcionários</td>
+<td>107</td>
+</tr>
+<tr>
+<td>Departamentos</td>
+<td>11 com funcionários / 27 cadastrados</td>
+</tr>
+<tr>
+<td>Cargos únicos</td>
+<td>19</td>
+</tr>
+<tr>
+<td>Menor salário</td>
+<td>R$ 2.100</td>
+</tr>
+<tr>
+<td>Maior salário</td>
+<td>R$ 24.000 (Steven King — Presidente)</td>
+</tr>
+<tr>
+<td>Média salarial</td>
+<td>R$ 6.461,83</td>
+</tr>
+<tr>
+<td>Total da folha</td>
+<td>R$ 691.416</td>
+</tr>
+<tr>
+<td>Mediana salarial</td>
+<td>R$ 6.200 (&lt; média → distribuição assimétrica)</td>
+</tr>
+<tr>
+<td>Views ativas</td>
+<td>1 (EMP_DETAILS_VIEW)</td>
+</tr>
+<tr>
+<td>Índices em EMPLOYEES</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Sequences</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="as-10-skills-testadas">As 10 Skills Testadas</h2>
+<hr />
+<h3 id="skill-1-fundamentos-select">Skill 1 — <code>fundamentos-select</code></h3>
+<p><strong>Objetivo:</strong> Construir SELECTs desde o básico — projeção, filtros, ordenação, paginação.</p>
+<p><strong>Tópicos validados:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tópico</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SELECT</code> com expressão aritmética</td>
+<td><code>salary * 12 + NVL(commission_pct,0) * salary * 12</code> ✓</td>
+</tr>
+<tr>
+<td><code>DISTINCT</code> simples e combinado</td>
+<td>12 departamentos únicos; 1 com <code>NULL</code> ✓</td>
+</tr>
+<tr>
+<td><code>DUAL</code> + <code>SYS_CONTEXT</code> Multitenant</td>
+<td><code>CON_NAME = PDB_APP1</code> dentro de <code>CDBLAB</code> confirmado ✓</td>
+</tr>
+<tr>
+<td><code>NULL</code> com <code>NVL</code></td>
+<td class="cell-ok">72 funcionários sem comissão tratados corretamente ✓</td>
+</tr>
+<tr>
+<td>Concatenação <code>||</code></td>
+<td>Encoding <code>á</code> → <code>??</code> no SQL*Plus (charset AL32UTF8 ok, limitação de terminal)</td>
+</tr>
+<tr>
+<td><code>WHERE</code> — <code>=</code>, <code>BETWEEN</code>, <code>IN</code>, <code>LIKE</code>, <code>IS NULL</code></td>
+<td class="cell-ok">Todos os operadores testados ✓</td>
+</tr>
+<tr>
+<td><code>AND / OR / NOT</code> com parênteses</td>
+<td class="cell-ok">Dept 80 ou 90, salary &gt; 13.000 → 5 linhas corretas ✓</td>
+</tr>
+<tr>
+<td><code>ORDER BY</code> com <code>NULLS FIRST/LAST</code></td>
+<td class="cell-ok">Nulos forçados para o topo ✓</td>
+</tr>
+<tr>
+<td><code>FETCH FIRST</code> — 4 formas</td>
+<td><code>ONLY</code>, <code>PERCENT</code>, <code>WITH TIES</code>, <code>OFFSET/FETCH</code> ✓</td>
+</tr>
+<tr>
+<td><code>ROWNUM</code> legado vs subquery</td>
+<td class="cell-ok">Armadilha documentada ✓</td>
+</tr>
+<tr>
+<td>Dicionário <code>user_tab_columns</code></td>
+<td class="cell-ok">11 colunas de EMPLOYEES mapeadas ✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Destaque Multitenant:</strong> <code>SYS_CONTEXT('USERENV','CON_NAME')</code> retornou <code>PDB_APP1</code> — mesma query em outro PDB retornaria diferente sem alterar o código.</p>
+<hr />
+<h3 id="skill-2-funcoes-single-row">Skill 2 — <code>funcoes-single-row</code></h3>
+<p><strong>Objetivo:</strong> Manipular valores individuais — string, número, data, conversão, NULL, condicional.</p>
+<p><strong>Tópicos validados:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Categoria</th>
+<th>Funções testadas</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td><code>UPPER/LOWER/INITCAP/SUBSTR/INSTR/REPLACE/TRIM/LPAD/RPAD</code></td>
+<td class="cell-ok">✓</td>
+</tr>
+<tr>
+<td>Numérica</td>
+<td><code>ROUND/TRUNC/MOD/CEIL/FLOOR/ABS/POWER/SQRT</code></td>
+<td class="cell-ok">✓</td>
+</tr>
+<tr>
+<td>Data</td>
+<td><code>SYSDATE/ADD_MONTHS/MONTHS_BETWEEN/EXTRACT/LAST_DAY/TRUNC/NEXT_DAY</code></td>
+<td class="cell-ok">✓</td>
+</tr>
+<tr>
+<td>Conversão</td>
+<td><code>TO_CHAR/TO_DATE/VALIDATE_CONVERSION/DEFAULT ON CONVERSION ERROR</code></td>
+<td class="cell-ok">✓</td>
+</tr>
+<tr>
+<td>NULL</td>
+<td><code>NVL/NVL2/COALESCE/NULLIF</code></td>
+<td class="cell-ok">✓</td>
+</tr>
+<tr>
+<td>Condicional</td>
+<td><code>CASE</code> e <code>DECODE</code> — mesmo resultado</td>
+<td class="cell-ok">✓</td>
+</tr>
+<tr>
+<td>Aninhadas</td>
+<td><code>UPPER(TRIM()) \|\| '@empresa.com.br'</code></td>
+<td class="cell-ok">✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Erros detectados e corrigidos:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Erro</th>
+<th>Causa</th>
+<th>Correção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="ora-code">ORA-01481</span></code> em <code>TO_CHAR(0.075,'FM990.00%')</code></td>
+<td><code>%</code> não é máscara Oracle</td>
+<td><code>TO_CHAR(val*100,'FM990D00') \|\| '%'</code></td>
+</tr>
+<tr>
+<td><code>SUBSTR</code> retornou <code>null</code> no email</td>
+<td><code>EMAIL</code> em HR não contém <code>@</code></td>
+<td><code>LOWER(email) \|\| '@dominio.com'</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Insight:</strong> Lex De Haan foi contratado em jan/2001 — <strong>25 anos e 4 meses</strong> de casa calculados via <code>TRUNC(MONTHS_BETWEEN(SYSDATE,hire_date)/12)</code>.</p>
+<hr />
+<h3 id="skill-3-funcoes-agregadas-group-by">Skill 3 — <code>funcoes-agregadas-group-by</code></h3>
+<p><strong>Objetivo:</strong> Calcular resumos por grupo — COUNT, SUM, AVG, GROUP BY, HAVING, ROLLUP, CUBE, LISTAGG, PIVOT.</p>
+<p><strong>Tópicos validados:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tópico</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>COUNT/SUM/AVG/MIN/MAX/MEDIAN</code> sobre toda a tabela</td>
+<td><code>AVG=6.461</code> vs <code>MEDIAN=6.200</code> → assimetria por Steven King ✓</td>
+</tr>
+<tr>
+<td><code>GROUP BY</code> com JOIN</td>
+<td class="cell-ok">Sales lidera (R$304.500 / 34 func); Shipping: maior headcount (45) ✓</td>
+</tr>
+<tr>
+<td><code>WHERE</code> vs <code>HAVING</code></td>
+<td class="cell-ok">WHERE excluiu cargos AD antes; HAVING filtrou grupos com média &gt; 7.000 ✓</td>
+</tr>
+<tr>
+<td><code>COUNT(CASE WHEN...)</code></td>
+<td class="cell-ok">Dept 90: 100% alto salário; Dept 80: 23,5% &gt; R$10.000 ✓</td>
+</tr>
+<tr>
+<td><code>GROUP BY</code> multi-coluna</td>
+<td class="cell-ok">Dept 80: SA_REP (29 func, R$243.500) domina ✓</td>
+</tr>
+<tr>
+<td><code>LISTAGG</code> + <code>LISTAGG DISTINCT</code> (19c)</td>
+<td class="cell-ok">Funcionários e cargos únicos por departamento ✓</td>
+</tr>
+<tr>
+<td><code>ROLLUP</code> + <code>GROUPING()</code></td>
+<td class="cell-ok">Subtotais rotulados; Grand total R$138.408 ✓</td>
+</tr>
+<tr>
+<td><code>CUBE</code></td>
+<td class="cell-ok">9 linhas para 2 departamentos — todas combinações ✓</td>
+</tr>
+<tr>
+<td><code>GROUPING SETS</code></td>
+<td class="cell-ok">Detalhe por ano + subtotal por depto + grand total em 1 query ✓</td>
+</tr>
+<tr>
+<td><code>STDDEV/MEDIAN/PERCENTILE_CONT</code></td>
+<td class="cell-ok">Executive: desvio R$4.041 (King distorce média) ✓</td>
+</tr>
+<tr>
+<td><code>PIVOT</code></td>
+<td>Matriz dept × cargo: <code>(null)</code> onde combinação não existe ✓</td>
+</tr>
+<tr>
+<td><code>GROUP BY</code> em expressão + <code>LISTAGG</code></td>
+<td class="cell-ok">Pico 2005 (29 contratações) ✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Insight:</strong> <code>COUNT(*) - COUNT(commission_pct) = 72</code> — apenas 35/107 funcionários têm comissão, todos em Vendas.</p>
+<hr />
+<h3 id="skill-4-joins-completos">Skill 4 — <code>joins-completos</code></h3>
+<p><strong>Objetivo:</strong> Combinar dados de múltiplas tabelas — todos os tipos de JOIN, anti-join, semi-join, hierarquia.</p>
+<p><strong>Tópicos validados:</strong></p>
+<table>
+<thead>
+<tr>
+<th>JOIN</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INNER JOIN</code> — ON vs USING vs legado</td>
+<td class="cell-ok">3 formas, mesmo resultado ✓</td>
+</tr>
+<tr>
+<td>Auditoria de cardinalidade</td>
+<td class="cell-ok">INNER=106, LEFT=107, RIGHT=122, FULL=123 ✓</td>
+</tr>
+<tr>
+<td><code>LEFT JOIN</code> — func sem dept</td>
+<td class="cell-ok">1 funcionário sem departamento (Grant, emp_id=178) ✓</td>
+</tr>
+<tr>
+<td><code>RIGHT JOIN</code> — deptos vazios</td>
+<td class="cell-ok">16 departamentos sem funcionários ✓</td>
+</tr>
+<tr>
+<td><code>FULL OUTER JOIN</code></td>
+<td class="cell-ok">16 deptos vazios + 1 func sem dept ✓</td>
+</tr>
+<tr>
+<td><code>SELF-JOIN</code> gerente×subordinado</td>
+<td class="cell-ok">Steven King sem gerente; Alexander reporta a Lex ✓</td>
+</tr>
+<tr>
+<td>JOIN múltiplo 5 tabelas</td>
+<td><code>emp → job → dept → loc → country → region</code> ✓</td>
+</tr>
+<tr>
+<td>Anti-join <code>LEFT IS NULL</code> vs <code>NOT EXISTS</code></td>
+<td class="cell-ok">Ambos retornam os mesmos 16 deptos ✓</td>
+</tr>
+<tr>
+<td>Semi-join <code>EXISTS</code></td>
+<td class="cell-ok">11 departamentos com funcionários (de 27) ✓</td>
+</tr>
+<tr>
+<td>JOIN por faixa <code>BETWEEN</code></td>
+<td><code>JOB_GRADES</code> criada; Steven King → grade E ✓</td>
+</tr>
+<tr>
+<td><code>CROSS JOIN</code></td>
+<td class="cell-ok">3 meses × 2 cargos = 6 combinações ✓</td>
+</tr>
+<tr>
+<td>Armadilha <code>WHERE</code> vs <code>ON</code> no LEFT</td>
+<td><code>WHERE salary&gt;10000</code> virou INNER; <code>ON salary&gt;10000</code> preservou LEFT ✓</td>
+</tr>
+<tr>
+<td>Relatório 5 tabelas + agregação</td>
+<td class="cell-ok">Executive (Seattle), Marketing (Toronto), PR (Munich) ✓</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="skill-5-subconsultas-set-operators">Skill 5 — <code>subconsultas-set-operators</code></h3>
+<p><strong>Objetivo:</strong> Aninhar queries e combinar resultados — subquery em todos os contextos, CTE, UNION/INTERSECT/MINUS.</p>
+<p><strong>Tópicos validados:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tópico</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single-row <code>=</code> com agregado</td>
+<td class="cell-ok">8 funcionários acima da média de R$6.462 ✓</td>
+</tr>
+<tr>
+<td>Multi-column single-row</td>
+<td class="cell-ok">5 IT_PROG no dept 60 identificados ✓</td>
+</tr>
+<tr>
+<td><code>IN / &gt; ANY / &gt; ALL</code></td>
+<td><code>&gt; ALL</code> retornou só 3 — únicos acima do maior SA_MAN ✓</td>
+</tr>
+<tr>
+<td><strong>Armadilha</strong> <code>NOT IN</code> + NULL</td>
+<td><code>NOT IN</code> → 34; <code>NOT EXISTS</code> → 35 — <strong>1 linha silenciosa perdida</strong> ✓</td>
+</tr>
+<tr>
+<td>Correlated — média do próprio dept</td>
+<td class="cell-ok">Subquery avaliada 1× por linha; Den +R$6.850 acima da média ✓</td>
+</tr>
+<tr>
+<td>Scalar subquery em SELECT</td>
+<td class="cell-ok">3 colunas calculadas por subquery por linha ✓</td>
+</tr>
+<tr>
+<td>Inline view — top-N por grupo</td>
+<td><code>RANK</code> em dept 90: Neena e Lex ambas na posição 2 ✓</td>
+</tr>
+<tr>
+<td>CTE pipeline — 3 etapas nomeadas</td>
+<td><code>resumo_dept → depts_com_nome → ranking</code> ✓</td>
+</tr>
+<tr>
+<td>CTE recursiva — organograma</td>
+<td class="cell-ok">Steven King → Adam Fripp → subordinados ✓</td>
+</tr>
+<tr>
+<td><code>UNION / UNION ALL / INTERSECT / MINUS</code></td>
+<td class="cell-ok">Todos os 4 operadores validados ✓</td>
+</tr>
+<tr>
+<td><code>MINUS</code> para auditoria</td>
+<td class="cell-ok">16 deptos sem funcionário — exato resultado do anti-join ✓</td>
+</tr>
+<tr>
+<td>CTE como dry-run de DML</td>
+<td class="cell-ok">Proposta de +10% para 8 funcionários sem alterar dados ✓</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="skill-6-dml-transacoes">Skill 6 — <code>dml-transacoes</code></h3>
+<p><strong>Objetivo:</strong> Inserir, atualizar, deletar e mergear dados com segurança transacional.</p>
+<p><strong>Tópicos validados:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tópico</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>INSERT</code> explícito + <code>INSERT SELECT</code></td>
+<td class="cell-ok">4 deptos + 48 func inseridos; IDENTITY gerou PKs ✓</td>
+</tr>
+<tr>
+<td><code>INSERT ALL</code> multi-row</td>
+<td class="cell-ok">3 deptos em 1 chamada ✓</td>
+</tr>
+<tr>
+<td><code>INSERT FIRST</code> por categoria</td>
+<td class="cell-ok">alto=6, médio=38, baixo=4 ✓</td>
+</tr>
+<tr>
+<td><code>UPDATE</code> dry-run + com subquery</td>
+<td class="cell-ok">34 func Vendas +15%; 5 func nivelados à média do dept ✓</td>
+</tr>
+<tr>
+<td><code>DELETE</code> com subquery</td>
+<td class="cell-ok">Dry-run revelou dept inativo; 0 func afetados ✓</td>
+</tr>
+<tr>
+<td><code>SAVEPOINT</code> — rollback parcial</td>
+<td>R$51.608 → R$103.216 → <code>ROLLBACK TO SAVEPOINT</code> → R$51.608 ✓</td>
+</tr>
+<tr>
+<td><code>MERGE</code> upsert</td>
+<td class="cell-ok">4 rows merged: 2 updates + 2 inserts em uma passada ✓</td>
+</tr>
+<tr>
+<td><code>FOR UPDATE NOWAIT</code></td>
+<td class="cell-ok">Travou 6 linhas imediatamente ✓</td>
+</tr>
+<tr>
+<td><code>FOR UPDATE SKIP LOCKED</code></td>
+<td class="cell-ok">3 jobs capturados, 4º permaneceu disponível ✓</td>
+</tr>
+<tr>
+<td><code>TRUNCATE</code> vs <code>DELETE</code></td>
+<td class="cell-ok">COMMIT implícito confirmado; IDENTITY não resetado ✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Erros detectados e corrigidos:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Erro</th>
+<th>Causa</th>
+<th>Correção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="ora-code">ORA-00911</span></code> em <code>SQL%ROWCOUNT</code> no INSERT</td>
+<td><code>SQL%ROWCOUNT</code> é PL/SQL — inválido em SQL puro</td>
+<td><code>DECLARE v_cnt; v_cnt := SQL%ROWCOUNT; INSERT ... v_cnt</code></td>
+</tr>
+<tr>
+<td><code><span class="ora-code">ORA-02014</span></code> em <code>FOR UPDATE</code> + subquery <code>ORDER BY</code></td>
+<td><code>FOR UPDATE</code> não aceita inline view com <code>ORDER BY</code></td>
+<td><code>ROWNUM</code> direto na tabela sem subquery</td>
+</tr>
+<tr>
+<td><code><span class="ora-code">ORA-00911</span></code> em comment inline após DML</td>
+<td><code>--</code> na mesma linha do DML</td>
+<td>Comentário em linha separada</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="skill-7-ddl-tabelas-constraints">Skill 7 — <code>ddl-tabelas-constraints</code></h3>
+<p><strong>Objetivo:</strong> Criar e evoluir o schema — CREATE TABLE, ALTER TABLE, constraints, Virtual columns, GTT, PTT.</p>
+<p><strong>Tópicos validados:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tópico</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CREATE TABLE</code> — schema completo 5 tabelas</td>
+<td><code>IDENTITY</code>, <code>VIRTUAL</code>, <code>PK</code>, <code>UK</code>, <code>FK</code>, <code>CHECK</code>, <code>NOT NULL</code>, <code>DEFAULT</code> ✓</td>
+</tr>
+<tr>
+<td><code>CTAS</code> — backup, template, subset</td>
+<td><code>lab_emp_bkp</code>=107, <code>lab_emp_template</code>=0, <code>lab_alto_sal</code>=15 ✓</td>
+</tr>
+<tr>
+<td><code>GTT</code> — Global Temporary Table</td>
+<td><code>ON COMMIT PRESERVE ROWS</code>: dados sobreviveram ao COMMIT ✓</td>
+</tr>
+<tr>
+<td><code>PTT</code> — Private Temporary Table</td>
+<td><code>ora$ptt_calculo</code> invisível em <code>user_tables</code> ✓</td>
+</tr>
+<tr>
+<td><code>ALTER TABLE</code> — ADD/MODIFY/RENAME/UNUSED</td>
+<td><code>SET UNUSED</code> + <code>DROP UNUSED COLUMNS</code> ✓</td>
+</tr>
+<tr>
+<td>Virtual columns</td>
+<td><code>valor_total = preco * estoque</code> sem armazenamento físico ✓</td>
+</tr>
+<tr>
+<td>Violações de constraint</td>
+<td><code><span class="ora-code">ORA-00001</span></code> (PK), <code><span class="ora-code">ORA-00001</span></code> (UK), <code><span class="ora-code">ORA-02290</span></code> (CHECK), <code><span class="ora-code">ORA-02291</span></code> (FK) ✓</td>
+</tr>
+<tr>
+<td><code>ON DELETE CASCADE</code></td>
+<td class="cell-ok">Deletar cliente apagou 1 pedido + 2 itens automaticamente ✓</td>
+</tr>
+<tr>
+<td><code>user_constraints</code></td>
+<td class="cell-ok">34 constraints catalogadas; 4 FKs mapeadas ✓</td>
+</tr>
+<tr>
+<td><code>DISABLE / ENABLE NOVALIDATE</code></td>
+<td><code>ENABLED / NOT VALIDATED</code> — protege futuros, ignora existentes ✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Erro detectado:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Erro</th>
+<th>Causa</th>
+<th>Correção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="ora-code">ORA-00907</span></code> em <code>MODIFY (col NOT NULL DEFAULT val)</code></td>
+<td>Oracle não aceita ambos no mesmo <code>MODIFY</code></td>
+<td>Dois comandos separados: <code>MODIFY DEFAULT</code> + <code>MODIFY NOT NULL</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="skill-8-indices-performance-sql">Skill 8 — <code>indices-performance-sql</code></h3>
+<p><strong>Objetivo:</strong> Criar índices, analisar planos de execução, coletar estatísticas, usar hints.</p>
+<p><strong>Tópicos validados:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tópico</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EXPLAIN PLAN</code> baseline</td>
+<td><code>INDEX JOIN</code> em vez de FTS — covering já existente ✓</td>
+</tr>
+<tr>
+<td>B-tree em <code>salary</code></td>
+<td class="cell-ok">Otimizador preferiu FTS (27/107 = 25% → FTS mais barato) ✓</td>
+</tr>
+<tr>
+<td>Composite <code>(job_id, salary)</code></td>
+<td>FTS+SORT (custo 4) → <code>INDEX RANGE SCAN DESCENDING</code> (custo 2) ✓</td>
+</tr>
+<tr>
+<td>Covering index</td>
+<td><code>SORT GROUP BY NOSORT</code> — zero sort, leitura só do índice ✓</td>
+</tr>
+<tr>
+<td>FBI <code>LOWER(email)</code></td>
+<td>FTS → <code>INDEX RANGE SCAN</code> em <code>IX_EMP_LOWER_EMAIL</code> ✓</td>
+</tr>
+<tr>
+<td><code>DBMS_STATS</code> com histogramas</td>
+<td class="cell-ok">FREQUENCY gerado em 7 colunas ✓</td>
+</tr>
+<tr>
+<td>Hints <code>INDEX / FULL / USE_HASH</code></td>
+<td><code>USE_HASH</code> marcado <strong>U (Unused)</strong> — otimizador já havia escolhido hash ✓</td>
+</tr>
+<tr>
+<td>Index monitoring</td>
+<td>4 índices monitorados; <code>IX_EMP_UPPER_LNAME</code> marcado <code>USED=NO</code> ✓</td>
+</tr>
+<tr>
+<td>Candidatos a DROP</td>
+<td><code>IX_EMP_UPPER_LNAME</code> identificado como não utilizado ✓</td>
+</tr>
+<tr>
+<td><code>DBMS_XPLAN.DISPLAY_CURSOR ALLSTATS</code></td>
+<td><code>E-Rows vs A-Rows</code> comparados ✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Erro detectado:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Erro</th>
+<th>Causa</th>
+<th>Correção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="ora-code">ORA-00911</span></code> em <code>EXEC DBMS_STATS(...)</code> multi-linha</td>
+<td><code>EXEC</code> não aceita parâmetros em múltiplas linhas</td>
+<td>Usar <code>BEGIN DBMS_STATS.GATHER_TABLE_STATS(...); END;</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="skill-9-views-sequences-sinonimos">Skill 9 — <code>views-sequences-sinonimos</code></h3>
+<p><strong>Objetivo:</strong> Views, Materialized Views, Sequences, Synonyms e Data Dictionary.</p>
+<p><strong>Tópicos validados:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tópico</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>View simples + <code>CREATE OR REPLACE</code></td>
+<td class="cell-ok">Coluna adicionada sem perder grants ✓</td>
+</tr>
+<tr>
+<td>View complexa — 4 tabelas + GROUP BY</td>
+<td class="cell-ok">Sales em Oxford/UK lidera (R$304.500) ✓</td>
+</tr>
+<tr>
+<td><code>WITH CHECK OPTION</code></td>
+<td><code><span class="ora-code">ORA-01402</span></code> capturado ao tentar inserir dept 50 em view filtrada por dept 80 ✓</td>
+</tr>
+<tr>
+<td><code>WITH READ ONLY</code></td>
+<td><code><span class="ora-code">ORA-42399</span></code> capturado ao tentar UPDATE ✓</td>
+</tr>
+<tr>
+<td>View atualizável — DML direto</td>
+<td>5 IT_PROG receberam +8% via <code>UPDATE vw_it_dept</code> ✓</td>
+</tr>
+<tr>
+<td><code>USER_UPDATABLE_COLUMNS</code></td>
+<td><code>vw_resumo_depto</code>: todas colunas <code>NO/NO/NO</code> — GROUP BY é somente leitura ✓</td>
+</tr>
+<tr>
+<td>Materialized View + REFRESH</td>
+<td>MV desatualizada → após <code>DBMS_MVIEW.REFRESH</code>: R$58.000 → R$59.000 ✓</td>
+</tr>
+<tr>
+<td>Sequences — <code>NEXTVAL/CURRVAL/CACHE/CYCLE</code></td>
+<td><code>seq_pedidos</code> gerou 1000→1005; CYCLE 10→100 confirmado ✓</td>
+</tr>
+<tr>
+<td>Synonyms — transparência</td>
+<td><code>emp</code>, <code>dept</code>, <code>vw_rsd</code> — queries idênticas às originais ✓</td>
+</tr>
+<tr>
+<td>Data Dictionary — inventário</td>
+<td class="cell-ok">24 índices, 9 tabelas, 6 views, 4 sequences, 2 triggers ✓</td>
+</tr>
+<tr>
+<td>Auditoria — FKs sem índice</td>
+<td><code>COUNTRIES.REGION_ID</code> e <code>DEPARTMENTS.MANAGER_ID</code> detectados ✓</td>
+</tr>
+<tr>
+<td><code>DBMS_METADATA.GET_DDL</code></td>
+<td>DDL completo extraído com <code>FORCE EDITIONABLE</code> ✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Erros detectados e corrigidos:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Erro</th>
+<th>Causa</th>
+<th>Correção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code><span class="ora-code">ORA-01031</span></code> em <code>CREATE MATERIALIZED VIEW</code></td>
+<td>HR sem <code>CREATE MATERIALIZED VIEW</code></td>
+<td><code>GRANT CREATE MATERIALIZED VIEW TO hr</code> como SYSDBA</td>
+</tr>
+<tr>
+<td><code><span class="ora-code">ORA-04013</span></code> em SEQUENCE <code>CACHE &gt; ciclo</code></td>
+<td><code>CACHE 20</code> maior que <code>(MAXVALUE-MINVALUE)/INCREMENT = 10</code></td>
+<td><code>NOCACHE</code> quando ciclo é pequeno</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Achado real de auditoria:</strong> <code>COUNTRIES.REGION_ID</code> e <code>DEPARTMENTS.MANAGER_ID</code> são FKs <strong>sem índice</strong> no schema HR padrão — risco de table lock em DELETEs frequentes na tabela pai.</p>
+<hr />
+<h3 id="skill-10-funcoes-analiticas-window">Skill 10 — <code>funcoes-analiticas-window</code></h3>
+<p><strong>Objetivo:</strong> Funções de janela — ranking, navegação entre linhas, frames, hierarquias, padrões avançados.</p>
+<p><strong>Tópicos validados:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tópico</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ROW_NUMBER / RANK / DENSE_RANK</code></td>
+<td class="cell-ok">Dept 80: Gerald/Ellen empatam → RANK pula, DENSE_RANK não ✓</td>
+</tr>
+<tr>
+<td>Top-N com empates</td>
+<td class="cell-ok">Executive: Neena e Lex ambas posição 2 com DENSE_RANK ✓</td>
+</tr>
+<tr>
+<td><code>NTILE / PERCENT_RANK / CUME_DIST</code></td>
+<td class="cell-ok">Steven King: 100% em ambos ✓</td>
+</tr>
+<tr>
+<td><code>LAG / LEAD</code></td>
+<td class="cell-ok">4 contratações em 07-JUN-2002; LAG com default=0 ✓</td>
+</tr>
+<tr>
+<td><code>FIRST_VALUE / LAST_VALUE / NTH_VALUE</code> com frame</td>
+<td><code>UNBOUNDED FOLLOWING</code> corrigiu bug do frame padrão ✓</td>
+</tr>
+<tr>
+<td>Window frames — running total + média móvel 3</td>
+<td class="cell-ok">Acumulado R$17.000 → R$124.416; média suaviza pico Steven ✓</td>
+</tr>
+<tr>
+<td><code>PERCENTILE_CONT / PERCENTILE_DISC / RATIO_TO_REPORT</code></td>
+<td class="cell-ok">Dept 50: mediana=3.100; Steven = 41.38% da folha Executive ✓</td>
+</tr>
+<tr>
+<td><code>KEEP DENSE_RANK FIRST/LAST</code></td>
+<td class="cell-ok">Payam = mais antigo em Shipping; Den = maior salário em Purchasing ✓</td>
+</tr>
+<tr>
+<td><code>CONNECT BY</code> + <code>ORDER SIBLINGS BY</code></td>
+<td class="cell-ok">Organograma 3 níveis ordenado por salário ✓</td>
+</tr>
+<tr>
+<td>CTE recursiva ANSI</td>
+<td><code>sal_acum_hierarquia</code> soma salários da cadeia completa ✓</td>
+</tr>
+<tr>
+<td>Ilhas e gaps</td>
+<td class="cell-ok">IDs 100-130: 1 ilha contínua de 31 membros ✓</td>
+</tr>
+<tr>
+<td>Deduplicação <code>ROW_NUMBER</code></td>
+<td class="cell-ok">Dept 80: último SA_MAN=Eleni, último SA_REP=Amit ✓</td>
+</tr>
+<tr>
+<td>YoY com <code>LAG</code> em CTE</td>
+<td class="cell-ok">Pico 2005 (29 contratações); queda 2006 (-26.1%) ✓</td>
+</tr>
+<tr>
+<td>% individual / dept / empresa</td>
+<td class="cell-ok">Steven: 41.4% do Executive e 6.6% de toda a empresa ✓</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="demonstracao-acid-oracle">Demonstração ACID Oracle</h2>
+<p>Executada no <code>PDB_APP1</code> com tabela <code>pdbadmin.acid_teste</code> e <code>pdbadmin.vendas_teste</code>.</p>
+<h3 id="a-atomicidade">A — Atomicidade</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1">-- Transferência de R$300: ambas as operações em uma transação</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">acid_teste</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">valor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valor</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">300</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">  </span><span class="c1">-- 1000 → 700</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">acid_teste</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">valor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valor</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">300</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">  </span><span class="c1">--  500 → 800</span>
+<span class="k">COMMIT</span><span class="p">;</span>
+</code></pre></div>
+
+<p><strong>Resultado:</strong> <code>COMMIT = ambas persistem | ROLLBACK = nenhuma muda</code><br />
+Verificado: ID=1: R$700 | ID=2: R$800 ✓</p>
+<h3 id="c-consistencia">C — Consistência</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1">-- Violação de PK → ROLLBACK automático</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">acid_teste</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">999</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ID duplicado&#39;</span><span class="p">);</span>
+<span class="c1">-- <span class="ora-code">ORA-00001</span>: unique constraint violated</span>
+
+<span class="c1">-- Violação de CHECK → ROLLBACK automático</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">acid_teste</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">valor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">100</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="c1">-- <span class="ora-code">ORA-02290</span>: check constraint (valor &gt;= 0) violated</span>
+</code></pre></div>
+
+<p><strong>Resultado:</strong> Banco permaneceu consistente em ambos os casos ✓</p>
+<h3 id="i-isolamento-mvcc">I — Isolamento (MVCC)</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">ora_rowscn</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">acid_teste</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">rownum</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="c1">-- SCN: 2.378.451</span>
+<span class="c1">-- Reader NÃO bloqueia Writer</span>
+<span class="c1">-- Writer NÃO bloqueia Reader</span>
+<span class="c1">-- Oracle usa Undo Segments para leitura consistente multiversão</span>
+</code></pre></div>
+
+<p><strong>Resultado:</strong> Isolamento READ COMMITTED padrão; sem deadlock em sessões concorrentes ✓</p>
+<h3 id="d-durabilidade">D — Durabilidade</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">v$archived_log</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">first_time</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">SYSDATE</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">24</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">standby_dest</span><span class="o">=</span><span class="s1">&#39;NO&#39;</span><span class="p">;</span>
+<span class="c1">-- 15 archived logs = cadeia de durabilidade confirmada</span>
+<span class="c1">-- COMMIT → Redo Buffer → LGWR → Redo Log → Archiver → FRA</span>
+</code></pre></div>
+
+<p><strong>Resultado:</strong> 15 archived logs protegem dados commitados ✓</p>
+<hr />
+<h2 id="dashboard-estado-final-do-ambiente">Dashboard — Estado Final do Ambiente</h2>
+<div class="codehilite"><pre><span></span><code><span class="err">╔══════════════════════════════════════════════════════════════════════════════╗</span>
+<span class="err">║</span><span class="w">         </span><span class="n">ORACLE</span><span class="w"> </span><span class="n">SQL</span><span class="w"> </span><span class="n">SKILLS</span><span class="w"> </span><span class="mi">2024</span><span class="w"> </span><span class="err">—</span><span class="w"> </span><span class="n">DASHBOARD</span><span class="w"> </span><span class="n">DE</span><span class="w"> </span><span class="n">VALIDAÇÃO</span><span class="w">                     </span><span class="err">║</span>
+<span class="err">║</span><span class="w">     </span><span class="n">CDBLAB</span><span class="w"> </span><span class="err">@</span><span class="w"> </span><span class="n">ol7</span><span class="o">-</span><span class="n">dba</span><span class="o">.</span><span class="n">localdomain</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">29</span><span class="o">-</span><span class="n">MAY</span><span class="o">-</span><span class="mi">2026</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PDB</span><span class="p">:</span><span class="w"> </span><span class="n">PDB_APP1</span><span class="w">             </span><span class="err">║</span>
+<span class="err">╠══════════════════════════════════════════════════════════════════════════════╣</span>
+<span class="err">║</span><span class="w">  </span><span class="n">ORACLE</span><span class="w"> </span><span class="mi">19</span><span class="n">c</span><span class="w"> </span><span class="n">MULTITENANT</span><span class="w">            </span><span class="err">│</span><span class="w">  </span><span class="n">SCHEMA</span><span class="w"> </span><span class="n">HR</span><span class="w"> </span><span class="err">—</span><span class="w"> </span><span class="n">EMPLOYEES</span><span class="w">                 </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">Versão</span><span class="p">:</span><span class="w">  </span><span class="mf">19.3</span><span class="o">.</span><span class="mf">0.0</span><span class="o">.</span><span class="mi">0</span><span class="w"> </span><span class="n">EE</span><span class="w">           </span><span class="err">│</span><span class="w">  </span><span class="n">Total</span><span class="p">:</span><span class="w">      </span><span class="mi">107</span><span class="w"> </span><span class="n">funcionários</span><span class="w">           </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">CDB</span><span class="p">:</span><span class="w">     </span><span class="n">CDBLAB</span><span class="w"> </span><span class="p">(</span><span class="n">ARCHIVELOG</span><span class="p">)</span><span class="w">     </span><span class="err">│</span><span class="w">  </span><span class="n">Depts</span><span class="p">:</span><span class="w">      </span><span class="mi">11</span><span class="w"> </span><span class="n">ativos</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">27</span><span class="w"> </span><span class="n">cadastrados</span><span class="w"> </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">PDBs</span><span class="p">:</span><span class="w">    </span><span class="mi">7</span><span class="w"> </span><span class="n">ativos</span><span class="w"> </span><span class="p">(</span><span class="n">READ</span><span class="w"> </span><span class="n">WRITE</span><span class="p">)</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="n">Cargos</span><span class="p">:</span><span class="w">     </span><span class="mi">19</span><span class="w"> </span><span class="err">ú</span><span class="n">nicos</span><span class="w">                  </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">SGA</span><span class="p">:</span><span class="w">     </span><span class="mf">1.5</span><span class="w"> </span><span class="n">GB</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PGA</span><span class="p">:</span><span class="w"> </span><span class="mi">512</span><span class="w"> </span><span class="n">MB</span><span class="w">    </span><span class="err">│</span><span class="w">  </span><span class="n">Folha</span><span class="p">:</span><span class="w">      </span><span class="n">R</span><span class="o">$</span><span class="w"> </span><span class="mf">691.416</span><span class="w">                 </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">Disco</span><span class="p">:</span><span class="w">   </span><span class="mi">45</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="n">GB</span><span class="w"> </span><span class="p">(</span><span class="mi">90</span><span class="o">%</span><span class="p">)</span><span class="w">        </span><span class="err">│</span><span class="w">  </span><span class="n">Média</span><span class="w"> </span><span class="n">Sal</span><span class="p">:</span><span class="w">  </span><span class="n">R</span><span class="o">$</span><span class="w"> </span><span class="mf">6.461</span><span class="w"> </span><span class="p">(</span><span class="n">Mediana</span><span class="p">:</span><span class="w"> </span><span class="mf">6.200</span><span class="p">)</span><span class="w"> </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">FRA</span><span class="p">:</span><span class="w">     </span><span class="mf">10.7</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="n">GB</span><span class="w"> </span><span class="p">(</span><span class="mf">53.6</span><span class="o">%</span><span class="p">)</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="n">Maior</span><span class="w"> </span><span class="n">Sal</span><span class="p">:</span><span class="w">  </span><span class="n">R</span><span class="o">$</span><span class="w"> </span><span class="mf">24.000</span><span class="w"> </span><span class="p">(</span><span class="n">Steven</span><span class="w"> </span><span class="n">King</span><span class="p">)</span><span class="w">   </span><span class="err">║</span>
+<span class="err">╠══════════════════════════════════════════════════════════════════════════════╣</span>
+<span class="err">║</span><span class="w">  </span><span class="n">SKILLS</span><span class="w"> </span><span class="n">VALIDADAS</span><span class="w">                  </span><span class="err">│</span><span class="w">  </span><span class="n">OBJETOS</span><span class="w"> </span><span class="n">CRIADOS</span><span class="w"> </span><span class="n">E</span><span class="w"> </span><span class="n">TESTADOS</span><span class="w">            </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="mf">1.</span><span class="w"> </span><span class="n">fundamentos</span><span class="o">-</span><span class="n">select</span><span class="w">        </span><span class="err">✓</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="n">Tabelas</span><span class="w"> </span><span class="n">criadas</span><span class="p">:</span><span class="w">       </span><span class="mi">15</span><span class="o">+</span><span class="w">             </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="mf">2.</span><span class="w"> </span><span class="n">funcoes</span><span class="o">-</span><span class="n">single</span><span class="o">-</span><span class="n">row</span><span class="w">        </span><span class="err">✓</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="n">Views</span><span class="w"> </span><span class="n">criadas</span><span class="p">:</span><span class="w">          </span><span class="mi">8</span><span class="w">              </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="mf">3.</span><span class="w"> </span><span class="n">funcoes</span><span class="o">-</span><span class="n">agregadas</span><span class="o">-</span><span class="n">group</span><span class="o">-</span><span class="n">by</span><span class="w"> </span><span class="err">✓</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="n">Materialized</span><span class="w"> </span><span class="n">View</span><span class="p">:</span><span class="w">      </span><span class="mi">1</span><span class="w">              </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="mf">4.</span><span class="w"> </span><span class="n">joins</span><span class="o">-</span><span class="n">completos</span><span class="w">           </span><span class="err">✓</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="n">Sequences</span><span class="w"> </span><span class="n">criadas</span><span class="p">:</span><span class="w">      </span><span class="mi">3</span><span class="w">              </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="mf">5.</span><span class="w"> </span><span class="n">subconsultas</span><span class="o">-</span><span class="n">set</span><span class="o">-</span><span class="n">operators</span><span class="w"> </span><span class="err">✓</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="n">Synonyms</span><span class="w"> </span><span class="n">criados</span><span class="p">:</span><span class="w">       </span><span class="mi">3</span><span class="w">              </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="mf">6.</span><span class="w"> </span><span class="n">dml</span><span class="o">-</span><span class="n">transacoes</span><span class="w">            </span><span class="err">✓</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="err">Í</span><span class="n">ndices</span><span class="w"> </span><span class="n">criados</span><span class="o">/</span><span class="n">testados</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">            </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="mf">7.</span><span class="w"> </span><span class="n">ddl</span><span class="o">-</span><span class="n">tabelas</span><span class="o">-</span><span class="n">constraints</span><span class="w">   </span><span class="err">✓</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="n">Constraints</span><span class="w"> </span><span class="n">testadas</span><span class="p">:</span><span class="w">  </span><span class="mi">34</span><span class="w">              </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="mf">8.</span><span class="w"> </span><span class="n">indices</span><span class="o">-</span><span class="n">performance</span><span class="o">-</span><span class="n">sql</span><span class="w">   </span><span class="err">✓</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="n">GTT</span><span class="o">/</span><span class="n">PTT</span><span class="w"> </span><span class="n">criadas</span><span class="p">:</span><span class="w">        </span><span class="mi">2</span><span class="w">              </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="mf">9.</span><span class="w"> </span><span class="n">views</span><span class="o">-</span><span class="n">sequences</span><span class="o">-</span><span class="n">sinonimos</span><span class="w"> </span><span class="err">✓</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="n">MERGE</span><span class="w"> </span><span class="n">executados</span><span class="p">:</span><span class="w">       </span><span class="mi">1</span><span class="w">              </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="mf">10.</span><span class="w"> </span><span class="n">funcoes</span><span class="o">-</span><span class="n">analiticas</span><span class="o">-</span><span class="n">window</span><span class="w"> </span><span class="err">✓</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="n">SAVEPOINTs</span><span class="w"> </span><span class="n">testados</span><span class="p">:</span><span class="w">    </span><span class="mi">2</span><span class="w">              </span><span class="err">║</span>
+<span class="err">╠══════════════════════════════════════════════════════════════════════════════╣</span>
+<span class="err">║</span><span class="w">  </span><span class="n">ACID</span><span class="w"> </span><span class="n">ORACLE</span><span class="w"> </span><span class="n">VALIDADO</span><span class="w">              </span><span class="err">│</span><span class="w">  </span><span class="n">ERROS</span><span class="w"> </span><span class="n">DETECTADOS</span><span class="w"> </span><span class="n">E</span><span class="w"> </span><span class="n">CORRIGIDOS</span><span class="w">         </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">Atomicidade</span><span class="p">:</span><span class="w">    </span><span class="err">✓</span><span class="w"> </span><span class="p">(</span><span class="n">commit</span><span class="o">/</span><span class="n">rb</span><span class="p">)</span><span class="w">    </span><span class="err">│</span><span class="w">  </span><span class="n">ORA</span><span class="o">-</span><span class="mi">01481</span><span class="w"> </span><span class="n">TO_CHAR</span><span class="w"> </span><span class="n">com</span><span class="w"> </span><span class="o">%</span><span class="p">:</span><span class="w">   </span><span class="n">corrigido</span><span class="w">  </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">Consistência</span><span class="p">:</span><span class="w">   </span><span class="err">✓</span><span class="w"> </span><span class="p">(</span><span class="n">PK</span><span class="o">+</span><span class="n">CHECK</span><span class="p">)</span><span class="w">     </span><span class="err">│</span><span class="w">  </span><span class="n">ORA</span><span class="o">-</span><span class="mi">00911</span><span class="w"> </span><span class="n">SQL</span><span class="o">%</span><span class="n">ROWCOUNT</span><span class="p">:</span><span class="w">    </span><span class="n">corrigido</span><span class="w">  </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">Isolamento</span><span class="p">:</span><span class="w">     </span><span class="err">✓</span><span class="w"> </span><span class="p">(</span><span class="n">MVCC</span><span class="o">/</span><span class="n">SCN</span><span class="p">)</span><span class="w">     </span><span class="err">│</span><span class="w">  </span><span class="n">ORA</span><span class="o">-</span><span class="mi">02014</span><span class="w"> </span><span class="n">FOR</span><span class="w"> </span><span class="n">UPDATE</span><span class="w"> </span><span class="n">view</span><span class="p">:</span><span class="w"> </span><span class="n">corrigido</span><span class="w">  </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">Durabilidade</span><span class="p">:</span><span class="w">   </span><span class="err">✓</span><span class="w"> </span><span class="p">(</span><span class="mi">15</span><span class="w"> </span><span class="n">arc</span><span class="w"> </span><span class="n">logs</span><span class="p">)</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="n">ORA</span><span class="o">-</span><span class="mi">04013</span><span class="w"> </span><span class="n">CACHE</span><span class="o">&gt;</span><span class="n">ciclo</span><span class="p">:</span><span class="w">     </span><span class="n">corrigido</span><span class="w">  </span><span class="err">║</span>
+<span class="err">╠══════════════════════════════════════════════════════════════════════════════╣</span>
+<span class="err">║</span><span class="w">  </span><span class="n">ACHADOS</span><span class="w"> </span><span class="n">REAIS</span><span class="w"> </span><span class="n">DO</span><span class="w"> </span><span class="n">AMBIENTE</span><span class="w">         </span><span class="err">│</span><span class="w">  </span><span class="n">PARA</span><span class="w"> </span><span class="n">NOTA</span><span class="w"> </span><span class="mi">10</span><span class="w">                          </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">FKs</span><span class="w"> </span><span class="n">sem</span><span class="w"> </span><span class="err">í</span><span class="n">ndice</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">(</span><span class="n">HR</span><span class="w"> </span><span class="n">padrão</span><span class="p">)</span><span class="w">    </span><span class="err">│</span><span class="w">  </span><span class="err">≥</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="n">GB</span><span class="w"> </span><span class="n">RAM</span><span class="w">                           </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">Disco</span><span class="w"> </span><span class="n">em</span><span class="w"> </span><span class="mi">90</span><span class="o">%</span><span class="p">:</span><span class="w"> </span><span class="n">atenção</span><span class="w">            </span><span class="err">│</span><span class="w">  </span><span class="mi">2</span><span class="w"> </span><span class="n">servidores</span><span class="w"> </span><span class="p">(</span><span class="n">Refreshable</span><span class="o">+</span><span class="n">Clone</span><span class="p">)</span><span class="w">       </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">SECURE_EMPLOYEES</span><span class="p">:</span><span class="w"> </span><span class="n">INVALID</span><span class="w">        </span><span class="err">│</span><span class="w">  </span><span class="n">Storage</span><span class="w"> </span><span class="n">com</span><span class="w"> </span><span class="n">snapshot</span><span class="w"> </span><span class="p">(</span><span class="n">snapshot</span><span class="w"> </span><span class="n">copy</span><span class="p">)</span><span class="w">  </span><span class="err">║</span>
+<span class="err">║</span><span class="w">  </span><span class="n">Versão</span><span class="p">:</span><span class="w"> </span><span class="mf">19.3</span><span class="w"> </span><span class="n">sem</span><span class="w"> </span><span class="n">patch</span><span class="w"> </span><span class="p">(</span><span class="mi">7</span><span class="w"> </span><span class="n">anos</span><span class="p">)</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="n">Oracle</span><span class="w"> </span><span class="mi">19</span><span class="n">c</span><span class="w"> </span><span class="n">RU</span><span class="w"> </span><span class="mf">19.18</span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="w"> </span><span class="n">PDBs</span><span class="w"> </span><span class="n">free</span><span class="p">)</span><span class="w">   </span><span class="err">║</span>
+<span class="err">╚══════════════════════════════════════════════════════════════════════════════╝</span>
+</code></pre></div>
+
+<hr />
+<h2 id="resumo-de-erros-e-correcoes">Resumo de Erros e Correções</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Skill</th>
+<th>Erro</th>
+<th>Causa Raiz</th>
+<th>Correção Aplicada</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>funcoes-single-row</code></td>
+<td><code><span class="ora-code">ORA-01481</span></code> em <code>TO_CHAR('%')</code></td>
+<td><code>%</code> não é máscara Oracle</td>
+<td><code>TO_CHAR(val*100,'FM990D00') \|\| '%'</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>funcoes-single-row</code></td>
+<td><code>SUBSTR(email,'@')</code> → null</td>
+<td><code>EMAIL</code> no HR não contém <code>@</code></td>
+<td><code>LOWER(email) \|\| '@dominio.com'</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>joins-completos</code></td>
+<td><code><span class="ora-code">ORA-25154</span></code> com <code>USING</code> + qualificador</td>
+<td><code>USING</code> proíbe alias na coluna</td>
+<td>Substituir por <code>JOIN ... ON</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>dml-transacoes</code></td>
+<td><code><span class="ora-code">ORA-00911</span></code> em <code>SQL%ROWCOUNT</code></td>
+<td><code>SQL%ROWCOUNT</code> é PL/SQL</td>
+<td><code>DECLARE v_cnt; v_cnt := SQL%ROWCOUNT</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>dml-transacoes</code></td>
+<td><code><span class="ora-code">ORA-02014</span></code> em <code>FOR UPDATE</code> + ORDER BY</td>
+<td><code>FOR UPDATE</code> não aceita inline view com <code>ORDER BY</code></td>
+<td><code>ROWNUM</code> direto na tabela</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>ddl-tabelas-constraints</code></td>
+<td><code><span class="ora-code">ORA-00907</span></code> em <code>MODIFY NOT NULL DEFAULT</code></td>
+<td>Oracle não aceita ambos no mesmo <code>MODIFY</code></td>
+<td>2 comandos separados</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>indices-performance-sql</code></td>
+<td><code><span class="ora-code">ORA-00911</span></code> em <code>EXEC DBMS_STATS(...)</code> multi-linha</td>
+<td><code>EXEC</code> não aceita multi-linha</td>
+<td><code>BEGIN DBMS_STATS(...); END;</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>views-sequences-sinonimos</code></td>
+<td><code><span class="ora-code">ORA-01031</span></code> em <code>CREATE MATERIALIZED VIEW</code></td>
+<td>HR sem o privilégio</td>
+<td><code>GRANT CREATE MATERIALIZED VIEW TO hr</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>views-sequences-sinonimos</code></td>
+<td><code><span class="ora-code">ORA-04013</span></code> SEQUENCE <code>CACHE &gt; ciclo</code></td>
+<td>Cache maior que o ciclo completo</td>
+<td><code>NOCACHE</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>views-sequences-sinonimos</code></td>
+<td><code><span class="ora-code">ORA-01400</span></code> em <code>WITH CHECK OPTION</code></td>
+<td>Colunas <code>NOT NULL</code> da tabela base omitidas</td>
+<td>Incluir todas as colunas obrigatórias</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="nota-geral-das-skills">Nota Geral das Skills</h2>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Tópicos testados</th>
+<th>Erros encontrados</th>
+<th>Nota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fundamentos-select</td>
+<td>11</td>
+<td>1 (encoding terminal)</td>
+<td class="cell-grade">9.5/10</td>
+</tr>
+<tr>
+<td>funcoes-single-row</td>
+<td>7</td>
+<td>2 (corrigidos)</td>
+<td>9/10</td>
+</tr>
+<tr>
+<td>funcoes-agregadas-group-by</td>
+<td>12</td>
+<td>0</td>
+<td>10/10</td>
+</tr>
+<tr>
+<td>joins-completos</td>
+<td>13</td>
+<td>1 (corrigido)</td>
+<td class="cell-grade">9.5/10</td>
+</tr>
+<tr>
+<td>subconsultas-set-operators</td>
+<td>12</td>
+<td>0</td>
+<td>10/10</td>
+</tr>
+<tr>
+<td>dml-transacoes</td>
+<td>10</td>
+<td>3 (corrigidos)</td>
+<td>9/10</td>
+</tr>
+<tr>
+<td>ddl-tabelas-constraints</td>
+<td>10</td>
+<td>1 (corrigido)</td>
+<td class="cell-grade">9.5/10</td>
+</tr>
+<tr>
+<td>indices-performance-sql</td>
+<td>10</td>
+<td>1 (corrigido)</td>
+<td class="cell-grade">9.5/10</td>
+</tr>
+<tr>
+<td>views-sequences-sinonimos</td>
+<td>12</td>
+<td>3 (corrigidos)</td>
+<td>9/10</td>
+</tr>
+<tr>
+<td>funcoes-analiticas-window</td>
+<td>15</td>
+<td>0</td>
+<td>10/10</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td><strong>112</strong></td>
+<td><strong>12 (todos corrigidos)</strong></td>
+<td><strong>9.4/10</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="pontos-de-destaque">Pontos de Destaque</h2>
+<ul>
+<li><strong>112 tópicos</strong> testados em ambiente Oracle 19c Multitenant real</li>
+<li><strong>10 erros de sintaxe/privilégio</strong> detectados e documentados com correções</li>
+<li><strong>ACID demonstrado</strong> com constraints reais (PK + CHECK) e MVCC Oracle</li>
+<li><strong>2 achados de auditoria real</strong> no schema HR padrão (FKs sem índice)</li>
+<li>Ambiente com <strong>limitações reais</strong> (disco 90%, versão sem patch) — não simulado</li>
+<li>Todos os erros <strong>corrigidos na sessão</strong> com documentação da causa raiz</li>
+</ul>
+<h3 id="para-nota-10-seria-necessario">Para Nota 10 seria necessário</h3>
+<ul>
+<li>Ambiente com ≥ 16 GB RAM</li>
+<li>2 servidores (para Refreshable PDB e remote clone real)</li>
+<li>Storage com snapshot (para snapshot copy)</li>
+<li>Oracle 19c RU 19.18+ (3 PDBs gratuitos)</li>
+</ul>
+
+<div class="footer">
+<p>Oracle SQL Skills 2024 · Relatório gerado em 29-MAY-2026</p>
+<p>Ambiente: Oracle 19c EE 19.3.0.0.0 · CDB: CDBLAB · PDB: PDB_APP1 · Schema: HR</p>
+</div>
+
+</div>
+</body>
+</html>
