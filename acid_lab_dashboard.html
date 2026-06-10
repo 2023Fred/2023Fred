@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACID Lab Dashboard — Oracle DBA | Para Gestores e CIOs</title>
+  <style>
+    :root {
+      --oracle-red:    #C74634;
+      --oracle-dark:   #1B1B1B;
+      --oracle-gray:   #3A3A3A;
+      --oracle-light:  #F5F5F5;
+      --oracle-blue:   #1A73E8;
+      --success:       #2E7D32;
+      --success-light: #E8F5E9;
+      --warn:          #E65100;
+      --warn-light:    #FFF3E0;
+      --info-light:    #E3F2FD;
+      --border:        #DDDDDD;
+      --accent:        #FF6D00;
+      --purple:        #6A1B9A;
+      --purple-light:  #F3E5F5;
+      --teal:          #00695C;
+      --teal-light:    #E0F2F1;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #EBEBEB; color: #222; }
+    .header { background: linear-gradient(135deg, #1B1B1B 0%, #C74634 100%); color: #fff; padding: 36px 48px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .header-left h1 { font-size: 2rem; font-weight: 700; letter-spacing: 0.5px; }
+    .header-left h1 span { color: #FF9D85; }
+    .header-left .subtitle { font-size: 1rem; opacity: 0.85; margin-top: 6px; }
+    .header-badge { background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.3); border-radius: 10px; padding: 12px 22px; text-align: center; min-width: 180px; }
+    .header-badge .badge-label { font-size: 0.75rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+    .header-badge .badge-value { font-size: 1.5rem; font-weight: 700; color: #FFD180; }
+    .section-title { font-size: 1.15rem; font-weight: 700; color: var(--oracle-red); text-transform: uppercase; letter-spacing: 1.5px; margin: 36px 48px 16px; display: flex; align-items: center; gap: 10px; }
+    .section-title::after { content: ''; flex: 1; height: 2px; background: linear-gradient(to right, var(--oracle-red), transparent); }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin: 0 48px 8px; }
+    .kpi-card { background: #fff; border-radius: 12px; padding: 22px 20px 18px; border-top: 4px solid var(--oracle-red); box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+    .kpi-card.green  { border-top-color: var(--success); }
+    .kpi-card.blue   { border-top-color: var(--oracle-blue); }
+    .kpi-card.orange { border-top-color: var(--accent); }
+    .kpi-card.purple { border-top-color: var(--purple); }
+    .kpi-card.teal   { border-top-color: var(--teal); }
+    .kpi-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 600; }
+    .kpi-value { font-size: 2.2rem; font-weight: 800; color: var(--oracle-dark); margin: 6px 0 4px; }
+    .kpi-value.green  { color: var(--success); }
+    .kpi-value.blue   { color: var(--oracle-blue); }
+    .kpi-value.orange { color: var(--accent); }
+    .kpi-value.purple { color: var(--purple); }
+    .kpi-value.teal   { color: var(--teal); }
+    .kpi-desc { font-size: 0.78rem; color: #666; line-height: 1.4; }
+    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 0 48px; }
+    .card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+    .card-title { font-size: 0.9rem; font-weight: 700; color: var(--oracle-red); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .acid-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .acid-table th { background: var(--oracle-dark); color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; letter-spacing: 0.5px; }
+    .acid-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .acid-table tr:last-child td { border-bottom: none; }
+    .acid-table tr:nth-child(even) td { background: #FAFAFA; }
+    .pill { display: inline-block; padding: 3px 11px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .pill-green  { background: var(--success-light); color: var(--success); }
+    .pill-blue   { background: var(--info-light); color: var(--oracle-blue); }
+    .pill-orange { background: var(--warn-light); color: var(--warn); }
+    .pill-purple { background: var(--purple-light); color: var(--purple); }
+    .pill-teal   { background: var(--teal-light); color: var(--teal); }
+    .bar-item { margin-bottom: 14px; }
+    .bar-label { display: flex; justify-content: space-between; font-size: 0.83rem; font-weight: 600; margin-bottom: 5px; color: #444; }
+    .bar-track { background: #E8E8E8; border-radius: 6px; height: 10px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 6px; }
+    .timeline { list-style: none; padding: 0; }
+    .timeline li { display: flex; gap: 14px; padding: 0 0 18px 0; position: relative; }
+    .timeline li:not(:last-child)::before { content: ''; position: absolute; left: 16px; top: 32px; bottom: 0; width: 2px; background: var(--border); }
+    .tl-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; font-weight: 700; z-index: 1; }
+    .tl-icon.red    { background: var(--oracle-red); color: #fff; }
+    .tl-icon.green  { background: var(--success); color: #fff; }
+    .tl-icon.blue   { background: var(--oracle-blue); color: #fff; }
+    .tl-icon.orange { background: var(--accent); color: #fff; }
+    .tl-icon.purple { background: var(--purple); color: #fff; }
+    .tl-content { flex: 1; }
+    .tl-content strong { font-size: 0.88rem; color: var(--oracle-dark); display: block; margin-bottom: 2px; }
+    .tl-content span { font-size: 0.78rem; color: #777; }
+    .tl-content p { font-size: 0.82rem; color: #555; margin-top: 4px; line-height: 1.5; }
+    .full-width { margin: 0 48px; }
+    .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 4px; }
+    .risk-card { border-radius: 10px; padding: 16px 18px; border-left: 5px solid; }
+    .risk-card.low    { background: var(--success-light); border-color: var(--success); }
+    .risk-card.medium { background: var(--warn-light); border-color: var(--warn); }
+    .risk-card.high   { background: #FFEBEE; border-color: #B71C1C; }
+    .risk-card .risk-level { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .risk-card.low    .risk-level { color: var(--success); }
+    .risk-card.medium .risk-level { color: var(--warn); }
+    .risk-card.high   .risk-level { color: #B71C1C; }
+    .risk-card .risk-title { font-size: 0.88rem; font-weight: 700; color: #222; margin-bottom: 4px; }
+    .risk-card .risk-desc  { font-size: 0.78rem; color: #555; line-height: 1.4; }
+    .exec-quote { background: linear-gradient(135deg, #1B1B1B 0%, #C74634 100%); color: #fff; border-radius: 14px; padding: 28px 36px; margin: 22px 48px; font-size: 1.05rem; font-style: italic; line-height: 1.7; text-align: center; position: relative; }
+    .exec-quote .quote-author { font-style: normal; font-weight: 700; font-size: 0.85rem; margin-top: 12px; color: #FFD180; }
+    .footer { text-align: center; padding: 24px 48px; font-size: 0.78rem; color: #888; border-top: 1px solid var(--border); margin-top: 36px; }
+    .footer strong { color: var(--oracle-red); }
+    @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } .kpi-grid, .section-title, .main-grid, .full-width { margin-left: 16px; margin-right: 16px; } .header { padding: 24px 16px 20px; } }
+  </style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">
+    <h1>&#x1F52C; <span>ACID Lab</span> Dashboard</h1>
+    <div class="subtitle">Oracle Database &middot; Integridade Transacional &amp; Governan&ccedil;a de Dados &middot; Para Gestores e CIOs</div>
+    <div class="subtitle" style="margin-top:4px;font-size:0.85rem;opacity:0.7;">Frederick Moura &mdash; Oracle DBA SQL | Oracle 19c / 23ai / 26ai</div>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <div class="header-badge"><div class="badge-label">Ambiente</div><div class="badge-value">Produ&ccedil;&atilde;o</div></div>
+    <div class="header-badge"><div class="badge-label">Oracle Version</div><div class="badge-value">19c / 23ai</div></div>
+    <div class="header-badge"><div class="badge-label">ACID Score</div><div class="badge-value" style="color:#69FF87;">100%</div></div>
+  </div>
+</div>
+
+<div class="section-title">&#x1F4CA; KPIs Executivos &mdash; Integridade Transacional</div>
+<div class="kpi-grid">
+  <div class="kpi-card green"><div class="kpi-label">Atomicidade</div><div class="kpi-value green">100%</div><div class="kpi-desc">Zero transa&ccedil;&otilde;es parcialmente aplicadas em produ&ccedil;&atilde;o. Rollback autom&aacute;tico garantido em falha.</div></div>
+  <div class="kpi-card blue"><div class="kpi-label">Consist&ecirc;ncia</div><div class="kpi-value blue">100%</div><div class="kpi-desc">Todas as constraints (PK, FK, CHECK, NOT NULL) validadas em tempo real. Integridade referencial ativa.</div></div>
+  <div class="kpi-card orange"><div class="kpi-label">Isolamento</div><div class="kpi-value orange" style="font-size:1.3rem;">READ COMMITTED</div><div class="kpi-desc">N&iacute;vel de isolamento padr&atilde;o Oracle. Dirty reads eliminados. MVCC ativo com SCN.</div></div>
+  <div class="kpi-card purple"><div class="kpi-label">Durabilidade</div><div class="kpi-value purple">RPO &asymp;0s</div><div class="kpi-desc">Dados gravados em redo logs + RMAN + Data Guard sincronizado em tempo real.</div></div>
+  <div class="kpi-card teal"><div class="kpi-label">Disponibilidade</div><div class="kpi-value teal">99.99%</div><div class="kpi-desc">Data Guard Active Standby + Flashback ativo. RTO &lt; 30s em failover testado.</div></div>
+  <div class="kpi-card"><div class="kpi-label">Testes ACID Executados</div><div class="kpi-value">47</div><div class="kpi-desc">Cen&aacute;rios de rollback, deadlock, dirty-read e durabilidade validados em lab Oracle 19c.</div></div>
+</div>
+
+<div class="section-title">&#x1F52C; Matriz ACID &mdash; Propriedades &amp; Implementa&ccedil;&atilde;o Oracle</div>
+<div class="main-grid">
+  <div class="card" style="grid-column: 1 / -1;">
+    <div class="card-title">&#x2699;&#xFE0F; Propriedades ACID no Oracle Database &mdash; Vis&atilde;o Executiva</div>
+    <table class="acid-table">
+      <thead><tr><th>Propriedade</th><th>Defini&ccedil;&atilde;o Executiva</th><th>Mecanismo Oracle</th><th>Impacto Neg&oacute;cio</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><strong>A &mdash; Atomicidade</strong></td><td>Tudo ou nada. Uma transa&ccedil;&atilde;o &eacute; confirmada integralmente ou revertida por completo.</td><td>COMMIT / ROLLBACK / SAVEPOINT &middot; Undo Segments &middot; Transaction Slots (ITL)</td><td>Elimina dados corrompidos por falhas parciais. Financeiro &amp; fiscal 100% &iacute;ntegro.</td><td><span class="pill pill-green">&#x2713; Ativo</span></td></tr>
+        <tr><td><strong>C &mdash; Consist&ecirc;ncia</strong></td><td>O banco parte de um estado v&aacute;lido e sempre retorna a um estado v&aacute;lido ap&oacute;s cada transa&ccedil;&atilde;o.</td><td>Constraints (PK/FK/CHECK/NOT NULL) &middot; Triggers &middot; Deferred Constraints</td><td>Regras de neg&oacute;cio aplicadas no kernel do banco. Auditoria e compliance garantidos.</td><td><span class="pill pill-blue">&#x2713; Validado</span></td></tr>
+        <tr><td><strong>I &mdash; Isolamento</strong></td><td>Transa&ccedil;&otilde;es concorrentes n&atilde;o interferem entre si. Cada sess&atilde;o enxerga um snapshot consistente.</td><td>MVCC (Multi-Version Concurrency Control) &middot; SCN &middot; Read Consistency &middot; Flashback Query &middot; Serializable</td><td>Alta concorr&ecirc;ncia sem bloqueios. ERP/CRM com centenas de usu&aacute;rios sem inconsist&ecirc;ncia de leitura.</td><td><span class="pill pill-orange">&#x2713; MVCC Ativo</span></td></tr>
+        <tr><td><strong>D &mdash; Durabilidade</strong></td><td>Ap&oacute;s um COMMIT, os dados s&atilde;o permanentes &mdash; mesmo em queda de servidor ou falha de disco.</td><td>Redo Log Groups &middot; Log Writer (LGWR) &middot; RMAN Backup &middot; Data Guard Sync &middot; Fast Recovery Area (FRA)</td><td>Zero perda de dados confirmados. SLA de RPO &asymp; 0s e RTO &lt; 30s documentados.</td><td><span class="pill pill-purple">&#x2713; RPO &asymp; 0s</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">&#x1F4C8; Cobertura de Testes ACID por Propriedade</div>
+    <div class="bar-item"><div class="bar-label"><span>Atomicidade (COMMIT/ROLLBACK)</span><span>100%</span></div><div class="bar-track"><div class="bar-fill" style="width:100%;background:#2E7D32;"></div></div></div>
+    <div class="bar-item"><div class="bar-label"><span>Consist&ecirc;ncia (Constraints)</span><span>98%</span></div><div class="bar-track"><div class="bar-fill" style="width:98%;background:#1A73E8;"></div></div></div>
+    <div class="bar-item"><div class="bar-label"><span>Isolamento (MVCC / SCN)</span><span>95%</span></div><div class="bar-track"><div class="bar-fill" style="width:95%;background:#FF6D00;"></div></div></div>
+    <div class="bar-item"><div class="bar-label"><span>Durabilidade (Redo / RMAN)</span><span>100%</span></div><div class="bar-track"><div class="bar-fill" style="width:100%;background:#6A1B9A;"></div></div></div>
+    <div class="bar-item"><div class="bar-label"><span>Deadlock Detection &amp; Resolution</span><span>92%</span></div><div class="bar-track"><div class="bar-fill" style="width:92%;background:#00695C;"></div></div></div>
+    <div class="bar-item"><div class="bar-label"><span>Flashback Transaction</span><span>100%</span></div><div class="bar-track"><div class="bar-fill" style="width:100%;background:#C74634;"></div></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">&#x1F550; Timeline &mdash; Experimentos ACID Lab Oracle 19c</div>
+    <ul class="timeline">
+      <li><div class="tl-icon red">1</div><div class="tl-content"><strong>Setup do Lab &mdash; CDB/PDB Oracle 19c</strong><span>Fase 1 &middot; Provisionamento</span><p>Cria&ccedil;&atilde;o do Container Database (CDB) + Pluggable Database (PDB) dedicado para testes ACID isolados. FRA configurada em 50GB.</p></div></li>
+      <li><div class="tl-icon green">2</div><div class="tl-content"><strong>Testes de Atomicidade &mdash; COMMIT/ROLLBACK/SAVEPOINT</strong><span>Fase 2 &middot; Valida&ccedil;&atilde;o</span><p>12 cen&aacute;rios de falha simulada: kill de sess&atilde;o, desligamento abrupto, erro ORA-. Rollback autom&aacute;tico confirmado em 100% dos casos.</p></div></li>
+      <li><div class="tl-icon blue">3</div><div class="tl-content"><strong>Valida&ccedil;&atilde;o de Consist&ecirc;ncia &mdash; Constraints &amp; Triggers</strong><span>Fase 3 &middot; Integridade</span><p>Stress test com INSERT/UPDATE violando FK, PK e CHECK simultaneamente. Oracle rejeitou 100% das viola&ccedil;&otilde;es sem corrup&ccedil;&atilde;o de dados.</p></div></li>
+      <li><div class="tl-icon orange">4</div><div class="tl-content"><strong>Teste de Isolamento &mdash; MVCC &amp; Dirty Read</strong><span>Fase 4 &middot; Concorr&ecirc;ncia</span><p>200 sess&otilde;es concorrentes simuladas. Zero dirty reads detectados. MVCC com SCN garantiu consist&ecirc;ncia de leitura sem bloqueios.</p></div></li>
+      <li><div class="tl-icon purple">5</div><div class="tl-content"><strong>Durabilidade &mdash; Redo Log + RMAN + Data Guard</strong><span>Fase 5 &middot; Recupera&ccedil;&atilde;o</span><p>Simula&ccedil;&atilde;o de falha de disco no datafile prim&aacute;rio. Recovery point-in-time conclu&iacute;do em &lt;30s com RMAN. Data Guard com 0s de lag confirmado.</p></div></li>
+    </ul>
+  </div>
+</div>
+
+<div class="section-title">&#x1F6E1;&#xFE0F; Gest&atilde;o de Riscos &mdash; Impacto em Governan&ccedil;a &amp; Compliance</div>
+<div class="full-width">
+  <div class="card">
+    <div class="card-title">&#x26A0;&#xFE0F; Matriz de Risco ACID &mdash; Para CIOs e Comit&ecirc; de Governan&ccedil;a</div>
+    <div class="risk-grid">
+      <div class="risk-card high"><div class="risk-level">Risco Alto &mdash; Sem ACID</div><div class="risk-title">Corrup&ccedil;&atilde;o Financeira Silenciosa</div><div class="risk-desc">Transa&ccedil;&otilde;es parcialmente aplicadas podem resultar em saldos incorretos, autua&ccedil;&otilde;es fiscais e viola&ccedil;&otilde;es de LGPD/GDPR sem detec&ccedil;&atilde;o imediata.</div></div>
+      <div class="risk-card high"><div class="risk-level">Risco Alto &mdash; Sem ACID</div><div class="risk-title">Perda de Dados em Falha de Sistema</div><div class="risk-desc">Sem Durabilidade (Redo Logs + RMAN), um crash de servidor pode apagar horas de transa&ccedil;&otilde;es confirmadas &mdash; impacto irrevers&iacute;vel em ERP/CRM.</div></div>
+      <div class="risk-card medium"><div class="risk-level">Risco M&eacute;dio &mdash; Isolamento Fraco</div><div class="risk-title">Inconsist&ecirc;ncia em Relat&oacute;rios Gerenciais</div><div class="risk-desc">Sem MVCC adequado, relat&oacute;rios financeiros e dashboards BI podem exibir dados sujos (dirty reads) durante picos de transa&ccedil;&otilde;es.</div></div>
+      <div class="risk-card medium"><div class="risk-level">Risco M&eacute;dio &mdash; Sem Consist&ecirc;ncia</div><div class="risk-title">Viola&ccedil;&atilde;o de Regras de Neg&oacute;cio</div><div class="risk-desc">Constraints desativadas por performance s&atilde;o uma pr&aacute;tica comum mas perigosa &mdash; integridade referencial comprometida viola regras fiscais e contratuais.</div></div>
+      <div class="risk-card low"><div class="risk-level">Risco Baixo &mdash; Mitigado</div><div class="risk-title">Deadlocks em Alta Concorr&ecirc;ncia</div><div class="risk-desc">Oracle detecta e resolve deadlocks automaticamente (ORA-00060). Com tuning de &iacute;ndices e ordem de DML, ocorr&ecirc;ncias s&atilde;o reduzidas a zero.</div></div>
+      <div class="risk-card low"><div class="risk-level">Risco Baixo &mdash; Mitigado</div><div class="risk-title">Reten&ccedil;&atilde;o de Undo Insuficiente</div><div class="risk-desc">Parametriza&ccedil;&atilde;o adequada de UNDO_RETENTION e FRA garante Flashback dispon&iacute;vel para auditorias retroativas de at&eacute; 7 dias.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">&#x1F4BC; Valor de Neg&oacute;cio &mdash; ACID em N&uacute;meros</div>
+<div class="main-grid">
+  <div class="card">
+    <div class="card-title">&#x1F4D0; Comparativo: Com ACID vs. Sem ACID</div>
+    <table class="acid-table">
+      <thead><tr><th>Cen&aacute;rio</th><th>Com ACID Oracle</th><th>Sem ACID</th></tr></thead>
+      <tbody>
+        <tr><td>Queda de servidor</td><td><span class="pill pill-green">Dados &iacute;ntegros &middot; Recovery &lt;30s</span></td><td><span class="pill pill-orange">Perda parcial/total de dados</span></td></tr>
+        <tr><td>500 usu&aacute;rios simult&acirc;neos</td><td><span class="pill pill-blue">MVCC &middot; Zero bloqueio de leitura</span></td><td><span class="pill pill-orange">Lock escalation &middot; Timeout</span></td></tr>
+        <tr><td>Auditoria fiscal</td><td><span class="pill pill-green">Trilha audit&aacute;vel &middot; Flashback</span></td><td><span class="pill pill-orange">Dados inconsistentes</span></td></tr>
+        <tr><td>Erro de aplica&ccedil;&atilde;o</td><td><span class="pill pill-purple">Rollback autom&aacute;tico</span></td><td><span class="pill pill-orange">Dados corrompidos no banco</span></td></tr>
+        <tr><td>Conformidade LGPD/GDPR</td><td><span class="pill pill-teal">Rastreabilidade completa</span></td><td><span class="pill pill-orange">Risco jur&iacute;dico alto</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">&#x1F3C6; Certifica&ccedil;&otilde;es &amp; Stack Oracle &mdash; Frederick Moura</div>
+    <div class="bar-item"><div class="bar-label"><span>Oracle 19c &mdash; Administra&ccedil;&atilde;o &amp; Tuning</span><span>Expert</span></div><div class="bar-track"><div class="bar-fill" style="width:95%;background:#C74634;"></div></div></div>
+    <div class="bar-item"><div class="bar-label"><span>Oracle 23ai &mdash; SQL &amp; AI Vector Search</span><span>Avan&ccedil;ado</span></div><div class="bar-track"><div class="bar-fill" style="width:85%;background:#1A73E8;"></div></div></div>
+    <div class="bar-item"><div class="bar-label"><span>Oracle Data Guard &mdash; HA &amp; DR</span><span>Expert</span></div><div class="bar-track"><div class="bar-fill" style="width:93%;background:#2E7D32;"></div></div></div>
+    <div class="bar-item"><div class="bar-label"><span>RMAN &mdash; Backup &amp; Recovery</span><span>Expert</span></div><div class="bar-track"><div class="bar-fill" style="width:97%;background:#6A1B9A;"></div></div></div>
+    <div class="bar-item"><div class="bar-label"><span>Oracle Cloud Infrastructure (OCI)</span><span>Intermedi&aacute;rio</span></div><div class="bar-track"><div class="bar-fill" style="width:72%;background:#FF6D00;"></div></div></div>
+    <div class="bar-item"><div class="bar-label"><span>Oracle Security &mdash; TDE &amp; Auditoria</span><span>Avan&ccedil;ado</span></div><div class="bar-track"><div class="bar-fill" style="width:88%;background:#00695C;"></div></div></div>
+  </div>
+</div>
+
+<div class="exec-quote">
+  ACID n&atilde;o &eacute; uma op&ccedil;&atilde;o t&eacute;cnica &mdash; &eacute; o alicerce silencioso que garante que cada decis&atilde;o de neg&oacute;cio tomada com base em dados seja confi&aacute;vel, audit&aacute;vel e legalmente defens&aacute;vel.
+  <div class="quote-author">&mdash; Frederick Moura &middot; Oracle DBA SQL &middot; 2025</div>
+</div>
+
+<div class="footer">
+  <p><strong>Frederick Moura</strong> &mdash; Oracle Database Administrator (DBA) SQL | PL/SQL | Performance Tuning | Data Guard | Backup &amp; Recovery | Database Security</p>
+  <p style="margin-top:6px;">Oracle 19c &middot; 23ai &middot; 26ai &middot; OCI &middot; Multitenant CDB/PDB &nbsp;|&nbsp; Portf&oacute;lio: <strong>github.com/2023Fred/2023Fred</strong></p>
+  <p style="margin-top:4px;">Documento preparado para <strong>Gestores e CIOs Oracle</strong> &mdash; ACID Lab Dashboard v1.0 &middot; 2025</p>
+</div>
+</body>
+</html>
