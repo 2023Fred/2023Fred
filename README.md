@@ -101,6 +101,16 @@ Sou **Administrador de Banco de Dados Oracle SQL (DBA)** com foco em garantir **
         </a>
       </td>
     </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <h3>🔬 ACID Lab Dashboard — Oracle 19c</h3>
+        <p><b>Para Gestores e CIOs Oracle</b></p>
+        <p>Dashboard executivo sobre integridade transacional ACID no Oracle 19c: Atomicidade, Consistência, Isolamento e Durabilidade — traduzidos em KPIs, matriz de riscos, governança e valor de negócio para ambientes de missão crítica. Inclui 47 testes validados em lab CDB/PDB com MVCC, RMAN e Data Guard.</p>
+        <a href="acid_lab_dashboard.html">
+          <img src="https://img.shields.io/badge/ACID%20Lab%20Dashboard-Oracle%2019c-C74634?style=for-the-badge&logo=oracle&logoColor=white" alt="ACID Lab Dashboard"/>
+        </a>
+      </td>
+    </tr>
 </table>
 
 <p align="center">
