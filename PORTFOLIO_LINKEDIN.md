@@ -88,6 +88,35 @@ Com IA, o DBA **antecipa soluções** em vez de apenas reagir. Quem sai na frent
 
 🔗 [Ver publicação original no LinkedIn](https://www.linkedin.com/in/frederick-moura-30a99827/recent-activity/all/)
 
+## 5) 🤖 Central de Agentes de IA
+
+Construí minha própria Central de Agentes de IA.
+
+Não é um app genérico de IA. É uma central com agentes especializados, cada um com uma rotina real por trás — construída em cima do que eu já rodo no lab.
+
+O catálogo hoje tem 4 agentes:
+
+→ **Agente de Backup** — executa RMAN full (banco + archivelogs), valida o backupset e atualiza o controlfile autobackup. Rotina padrão da imersão, sem passo manual.
+
+→ **Agente de Health Check** — valida instância, containers, dicionário de dados, FRA, alert log e listener. Reaproveita os comandos reais de verificação final que eu já usava na imersão.
+
+→ **Agente de Aplicação de Patch** — cria Oracle Home out-of-place, aplica RU via OPatch e move o banco com AutoUpgrade em modo deploy. Fluxo genérico, mas nasceu das atividades de patch com zero downtime de dados.
+
+→ **Agente de Auditoria de Segurança** — varre contas, perfis de senha, privilégios DBA e configuração de listener. Checklist de hardening Oracle, somente leitura.
+
+Junto com isso, montei a trilha completa de modernização — AUTOUPGRADE 19c para 23ai em 8 etapas encadeadas, onde cada passo parte literalmente do resultado do anterior: preparação do ambiente → novo Oracle Home isolado → patch sem downtime → migração para multitenant → upgrade para 23ai → patch incremental → verificação final.
+
+E para a vertical de Valuation, entrou um módulo de Due Diligence Financeira: checklist de 35 documentos organizados por bloco (financeiro-contábil e além), com status por item, upload de anexo e kit de documentos pronto (checklist em Excel, PDF para impressão, modelos de demonstrações, carta de solicitação em Word).
+
+O agente não decide. Ele padroniza, executa e documenta. Quem interpreta risco, aprova patch ou valida due diligence continua sendo o profissional.
+
+**A IA acelera. O DBA decide.**
+
+`#Oracle` `#Oracle23ai` `#DBA` `#PerformanceTuning` `#IA` `#ClaudeCode`
+
+![Catálogo da Central de Agentes de IA](central-agentes-catalogo.png)
+![Checklist de Due Diligence Financeira](central-agentes-due-diligence.png)
+
 ---
 
 ## 📊 Síntese Executiva
@@ -98,6 +127,7 @@ Com IA, o DBA **antecipa soluções** em vez de apenas reagir. Quem sai na frent
 | 2. RMAN Duplicate | `rman-duplicate` | Time-to-market + Homologação |
 | 3. RMAN Recover Table | `rman-recover-table` | Recuperação Granular + SLA |
 | 4. Recovery Full | `recovery-full` | Disaster Recovery + Compliance |
+| 5. Central de Agentes de IA | central-de-agentes | Padronização + Governança + Due Diligence |
 
 ---
 
